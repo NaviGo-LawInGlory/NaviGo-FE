@@ -18,7 +18,7 @@ const Navbar = () => {
   return (
     <nav className={Style.navbar}>
       <div>
-        <img src="/logoNavigo.svg" alt="Logo Navigo" />
+        <img src="Bar/logoNavigo.svg" alt="Logo Navigo" />
       </div>
 
       <ul className="flex justify-center gap-[1.25rem]">

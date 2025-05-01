@@ -1,0 +1,22 @@
+.sidebar{
+    background: #FFFFFF;
+    border-left: solid 6px transparent;
+}
+
+
+.sidebar:hover{
+    background: linear-gradient(180deg, #FFFFFF, #FCF2FF);
+    border-left: outset 6px #61008D;
+    transform: transition-colors duration-500;
+}
+
+.icon{
+    fill: red;
+    transition: color 0.3s ease;
+}
+
+.icon:hover{
+    background: linear-gradient(90deg, #A31ABE, #E250CE); /* Gradient yang diinginkan */
+    -webkit-background-clip: text; /* Membuat background mengikuti bentuk teks/ikon */
+    -webkit-text-fill-color: transparent; 
+}

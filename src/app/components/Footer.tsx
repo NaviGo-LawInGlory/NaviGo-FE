@@ -5,12 +5,12 @@ const Footer = () => {
             <img src="/logo.png" alt="logo" className="h-12" />
 
 
-            <h4>@2025 NaviGo</h4>
+            <h4 className="font-semibold bg-white bg-clip-text text-transparent ">@2025 NaviGo</h4>
 
             <div className="flex flex-col items-end">
-                <h4>Contact Us</h4>
+                <h4 className="font-semibold bg-white bg-clip-text text-transparent">Contact Us</h4>
                 <div className="flex flex-row">
-                    <img src="/Footer/mail.png" alt="" className="h-5" />
+                    <img src="/Footer/mail.png" alt="" className="h-5 " />
                     <img src="/Footer/ig.png" alt="" className="h-5" />
                 </div>
 
