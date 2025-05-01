@@ -1,3 +1,4 @@
+import PricingSection from "@/components/landing/PricingSection";
 import FeatureSection from "./components/FeatureSection";
 import Footer from "./components/Footer";
 import HeroSection from "./components/HeroSection";
@@ -9,6 +10,7 @@ export default function Home() {
     <HeroSection />
     <FeatureSection />
     <LawSection />
+    <PricingSection />
     <Footer />
     </>
   );
