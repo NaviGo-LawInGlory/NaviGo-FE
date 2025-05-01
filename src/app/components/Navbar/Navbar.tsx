@@ -4,6 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import Style from "./Navbar.module.css";
 import clsx from "clsx";
+import { useAuth } from "../../../context/AuthContext";
 
 const navLinks = [
   { href: "/", label: "Home" },
@@ -14,6 +15,11 @@ const navLinks = [
 
 const Navbar = () => {
   const pathname = usePathname();
+  const { user, token, logout } = useAuth();
+
+  const handleLogout = () => {
+    logout();
+  };
 
   return (
     <nav className={Style.navbar}>
@@ -27,20 +33,12 @@ const Navbar = () => {
 
           return (
             <li key={link.href} className="relative">
-              <Link
-                href={link.href}
-                className={clsx(
-                  "group text-white transition-colors font-semibold relative px-[2.5rem]",
-                  isActive ? "font-semibold" : "text-gray-300"
-                )}
-              >
+              <Link href={link.href} className={clsx("group text-white transition-colors font-semibold relative px-[2.5rem]", isActive ? "font-semibold" : "text-gray-300")}>
                 {link.label}
                 <span
                   className={clsx(
                     "absolute left-0 -bottom-[39px] h-[9px] w-full rounded-tl-[5px] rounded-tr-[5px] bg-white transform transition-transform duration-300 ease-out origin-center",
-                    isActive
-                      ? "scale-x-100"
-                      : "scale-x-0 group-hover:scale-x-100"
+                    isActive ? "scale-x-100" : "scale-x-0 group-hover:scale-x-100"
                   )}
                 />
               </Link>
@@ -50,17 +48,27 @@ const Navbar = () => {
       </ul>
 
       <div className="flex gap-4">
-        <Link href="/login">
-          <button className="bg-[#FFFFFF] px-[22px] py-[10px] text-[#61008D] rounded-lg font-semibold cursor-pointer transition duration-300 hover:bg-[#BABEC1]">
-            Sign In
-          </button>
-
-        </Link>
-        <Link href="/register">
-          <button className="bg-[#61008D] px-[22px] py-[10px] text-[#FFFFFF] rounded-lg font-semibold cursor-pointer transition duration-300 hover:bg-[#40025D]">
-            Sign Up
-          </button>
-        </Link>
+        {user && token ? (
+          // User is logged in, show dashboard and logout buttons
+          <>
+            <Link href="/dashboard/me">
+              <button className="bg-[#FFFFFF] px-[22px] py-[10px] text-[#61008D] rounded-lg font-semibold cursor-pointer transition duration-300 hover:bg-[#BABEC1]">Dashboard</button>
+            </Link>
+            <button onClick={handleLogout} className="bg-[#61008D] px-[22px] py-[10px] text-[#FFFFFF] rounded-lg font-semibold cursor-pointer transition duration-300 hover:bg-[#40025D]">
+              Logout
+            </button>
+          </>
+        ) : (
+          // User is not logged in, show login/register buttons
+          <>
+            <Link href="/login">
+              <button className="bg-[#FFFFFF] px-[22px] py-[10px] text-[#61008D] rounded-lg font-semibold cursor-pointer transition duration-300 hover:bg-[#BABEC1]">Sign In</button>
+            </Link>
+            <Link href="/register">
+              <button className="bg-[#61008D] px-[22px] py-[10px] text-[#FFFFFF] rounded-lg font-semibold cursor-pointer transition duration-300 hover:bg-[#40025D]">Sign Up</button>
+            </Link>
+          </>
+        )}
       </div>
     </nav>
   );

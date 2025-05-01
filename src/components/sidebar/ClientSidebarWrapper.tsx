@@ -1,11 +1,11 @@
-'use client';
+"use client";
 
-import dynamic from 'next/dynamic';
+import dynamic from "next/dynamic";
 
-const Sidebar = dynamic(() => import('./Sidebar'), {
-  ssr: false
+const Sidebar = dynamic(() => import("./Sidebar"), {
+  ssr: false,
 });
 
 export default function ClientSidebarWrapper() {
   return <Sidebar />;
-} 
+}
