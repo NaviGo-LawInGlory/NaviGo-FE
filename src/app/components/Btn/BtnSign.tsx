@@ -1,19 +1,27 @@
 "use client";
 
-import React from 'react'
+import React from "react";
 
-type BtnSignProps = {
-    text: string
+interface BtnSignProps {
+  text: string;
+  disabled?: boolean;
+  onClick?: (e: React.MouseEvent<HTMLButtonElement>) => void;
 }
-const BtnSign: React.FC<BtnSignProps> = ({text}) => {
+
+const BtnSign: React.FC<BtnSignProps> = ({ text, disabled = false, onClick }) => {
   return (
     <button
-         type="button"
-         className="w-[30rem] h-[3.5rem] flex items-center bg-gradient-to-r from-[#A31ABE] to-[#E250CE] text-white justify-center py-2 rounded-[10px] shadow-sm hover:bg-gradient-to-r from-[#a010bd] to-[#e22aca] transition"
-       >
-        {text}
-       </button>
-  )
-}
+      onClick={onClick}
+      disabled={disabled}
+      type="submit"
+      className="w-[30rem] h-[3.5rem] flex items-center justify-center rounded-lg text-white font-medium text-base cursor-pointer disabled:opacity-70 disabled:cursor-not-allowed"
+      style={{
+        background: "linear-gradient(90deg, #A31ABE 0%, #E250CE 100%)",
+      }}
+    >
+      {text}
+    </button>
+  );
+};
 
-export default BtnSign
+export default BtnSign;
