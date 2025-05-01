@@ -17,7 +17,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
-        <main className="min-h-screen transition-all duration-300 md:ml-[300px] lg:ml-[340px]">
+        <main className="min-h-screen transition-all duration-300">
           {children}
         </main>
       </body>

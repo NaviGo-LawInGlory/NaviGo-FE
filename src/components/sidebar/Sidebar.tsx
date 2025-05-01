@@ -128,10 +128,11 @@ export default function Sidebar() {
               
               return (
                 <li key={item.name} className="relative">
-                  {/* Active state indicator */}
-                  {isActive && (
-                    <div className="absolute left-0 top-0 w-1 h-full bg-[#61008D]" />
-                  )}
+                  <div 
+                    className={`absolute left-0 top-0 w-1 h-full ${
+                      isActive ? 'bg-[#61008D]' : ''
+                    }`} 
+                  />
                   <Link
                     href={item.href}
                     className={`flex items-center px-3 py-4 text-sm md:text-md pl-6 transition-colors relative ${
