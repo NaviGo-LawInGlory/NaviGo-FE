@@ -10,38 +10,38 @@ const navItems = [
   { 
     name: 'Home', 
     href: '/', 
-    icon: '/sidebar_home.png',
-    activeIcon: '/sidebar_home_active.png'
+    icon: '/Sidebar/sidebar_home.png',
+    activeIcon: '/Sidebar/sidebar_home_active.png'
   },
   { 
     name: 'Document Generator', 
     href: '/document-generator', 
-    icon: '/sidebar_document.png',
-    activeIcon: '/sidebar_document_active.png'
+    icon: '/Sidebar/sidebar_document.png',
+    activeIcon: '/Sidebar/sidebar_document_active.png'
   },
   { 
     name: 'Document Analyzer', 
     href: '/document-analyzer', 
-    icon: '/sidebar_analyzer.png',
-    activeIcon: '/sidebar_analyzer_active.png'
+    icon: '/Sidebar/sidebar_analyzer.png',
+    activeIcon: '/Sidebar/sidebar_analyzer_active.png'
   },
   { 
     name: 'AI Chat Bot', 
     href: '/chat', 
-    icon: '/sidebar_chatbot.png',
-    activeIcon: '/sidebar_chatbot_active.png'
+    icon: '/Sidebar/sidebar_chatbot.png',
+    activeIcon: '/Sidebar/sidebar_chatbot_active.png'
   },
   { 
     name: 'Find Lawyer', 
     href: '/find-lawyer', 
-    icon: '/sidebar_lawyer.png',
-    activeIcon: '/sidebar_lawyer_active.png'
+    icon: '/Sidebar/sidebar_lawyer.png',
+    activeIcon: '/Sidebar/sidebar_lawyer_active.png'
   },
   { 
     name: 'History', 
     href: '/history', 
-    icon: '/sidebar_history.png',
-    activeIcon: '/sidebar_history_active.png'
+    icon: '/Sidebar/sidebar_history.png',
+    activeIcon: '/Sidebar/sidebar_history_active.png'
   },
 ];
 
@@ -107,7 +107,7 @@ export default function Sidebar() {
         <div className="px-6 py-8 flex justify-center">
           <Link href="/" className="flex items-center">
             <Image
-              src="/sidebar_logo_black.png"
+              src="/Sidebar/sidebar_logo_black.png"
               alt="NaviGo Logo"
               width={280}
               height={100}
