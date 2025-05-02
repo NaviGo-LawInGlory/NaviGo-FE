@@ -5,7 +5,7 @@ interface usernameProps  {
 }
 const DashboardBar : React.FC<usernameProps> = ({username}) => {
   return (
-    <div className="w-full h-[6rem] justify-end flex px-[10rem]" style={{ background: 'linear-gradient(to right, #61008D 0%, #A31ABE 100%)' }}>
+    <div className="w-full h-[6rem] justify-end flex px-[6rem]" style={{ background: 'linear-gradient(to right, #61008D 0%, #A31ABE 100%)' }}>
         <button className="h-auto w-auto bg-white rounded-[0.5rem] px-[1.5rem] my-[1.5rem] font-semibold text-[#5D5F61] ">
             Upgrade Plan
         </button>

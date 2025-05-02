@@ -47,7 +47,7 @@ const Sidebar = () => {
   const [activeItem, setActiveItem] = useState("Home");
 
   return (
-    <div className="h-screen w-[21%] shadow-2xl">
+    <div className="h-auto w-[21%] shadow-2xl">
       <div className="flex items-center justify-center pt-12">
         <img src="Bar/logoNavigoHitam.svg" alt="Logo Navigo" />
       </div>

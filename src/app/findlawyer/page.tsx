@@ -23,7 +23,7 @@ const FindLawyer = () => {
       <div className="flex-3">
         
         <DashboardBar username={username} /> 
-        <div className="flex flex-row">
+        <div className="w-full flex flex-row">
             <div className="flex-3">
             <SearchBar placeholder="Search lawyer" type="text" value={results} onChange={(e) => setResults(e.target.value)} />
             <div className="w-[90%] flex justify-end">
