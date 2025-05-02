@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import Link from "next/link"; // import Link dari Next.js
+import Link from "next/link";
 import Style from "./Sidebar.module.css";
 
 const menuItems = [
@@ -95,3 +95,4 @@ const Sidebar = () => {
 };
 
 export default Sidebar;
+

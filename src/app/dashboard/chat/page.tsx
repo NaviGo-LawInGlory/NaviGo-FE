@@ -3,7 +3,6 @@
 import { useState } from "react";
 import { SendIcon, Bot, Paperclip } from "lucide-react";
 import { useAuth } from "@/context/AuthContext";
-import DashboardHeader from "@/components/dashboard/DashboardHeader";
 
 interface Message {
   id: string;
@@ -45,10 +44,9 @@ export default function ChatPage() {
   }
 
   return (
-    <div className="flex flex-col h-screen bg-gray-50">
-      <DashboardHeader title="AI Chat Bot" />
+    <div className="flex flex-col h-full bg-gray-50 relative">
 
-      <div className="flex-1 overflow-y-auto p-6 space-y-6">
+      <div className="absolute inset-0 bottom-[72px] overflow-y-auto p-4 md:p-6 space-y-6">
         {messages.length === 0 ? (
           <div className="flex flex-col items-center justify-center h-full text-gray-400">
             <Bot size={48} className="mb-3 text-purple-400" />
@@ -76,7 +74,8 @@ export default function ChatPage() {
         )}
       </div>
 
-      <div className="bg-white p-4 shadow-[0_-2px_10px_rgba(0,0,0,0.05)]">
+
+      <div className="absolute bottom-0 left-0 right-0 bg-white p-4 shadow-[0_-2px_10px_rgba(0,0,0,0.05)]">
         <form onSubmit={handleSendMessage} className="max-w-4xl mx-auto">
           <div className="flex items-center gap-3 bg-gray-50 p-1 pl-2 pr-2 rounded-full shadow-inner">
             <button type="button" className="p-2.5 rounded-full text-purple-600 hover:bg-purple-100 transition-all duration-200 flex items-center justify-center">
@@ -92,3 +91,4 @@ export default function ChatPage() {
     </div>
   );
 }
+

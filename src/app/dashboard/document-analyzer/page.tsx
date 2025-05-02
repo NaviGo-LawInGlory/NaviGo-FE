@@ -1,7 +1,6 @@
 "use client";
 
 import { useAuth } from "@/context/AuthContext";
-import DashboardHeader from "@/components/dashboard/DashboardHeader";
 
 export default function DocumentAnalyzerPage() {
   const { user } = useAuth();
@@ -12,8 +11,6 @@ export default function DocumentAnalyzerPage() {
 
   return (
     <div className="flex flex-col h-screen">
-      <DashboardHeader title="Document Analyzer" />
-
       <div className="flex-1 p-8">
         <p className="mt-4">Analyze your legal documents here.</p>
       </div>

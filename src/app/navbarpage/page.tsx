@@ -1,7 +1,5 @@
 import React from 'react'
-// import Sidebar from '../components/Sidebar/Sidebar'
 import DashboardBar from '../components/Findlawyer/DashboardBar'
-// import Link from 'next/link'
 import Sidebar from './../components/Sidebar/Sidebar';
 
 const username = "Elgin Brian";
