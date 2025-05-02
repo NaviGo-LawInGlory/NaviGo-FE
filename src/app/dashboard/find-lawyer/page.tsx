@@ -24,7 +24,6 @@ export default function FindLawyerPage() {
               <LawyerCard />
             </div>
 
-
             <div className="w-full md:w-80 order-1 md:order-2 flex-shrink-0">
               <Filter />
             </div>
