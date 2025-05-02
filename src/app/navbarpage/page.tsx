@@ -1,12 +1,19 @@
 import React from 'react'
-import Navbar from '../components/Navbar/Navbar'
+// import Sidebar from '../components/Sidebar/Sidebar'
+import DashboardBar from '../components/Findlawyer/DashboardBar'
 // import Link from 'next/link'
+import Sidebar from './../components/Sidebar/Sidebar';
 
+const username = "Elgin Brian";
 const Navbarpage = () => {
   return (
-    <div>
-      <Navbar/>
-     
+    <div className="flex flex-auto w-screen">
+      <Sidebar/>
+      <div className="flex-3">
+      <DashboardBar username={username}/>
+
+      </div>
+
 
     </div>
   )
