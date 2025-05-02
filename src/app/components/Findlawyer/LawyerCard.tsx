@@ -1,6 +1,6 @@
-import React from 'react';
-import { FaStar } from 'react-icons/fa';
-import { HiLocationMarker } from 'react-icons/hi';
+import React from "react";
+import { FaStar } from "react-icons/fa";
+import { HiLocationMarker } from "react-icons/hi";
 
 export interface LawyerCardProps {
   name: string;
@@ -48,18 +48,11 @@ const lawyers: LawyerCardProps[] = [
 
 const LawyerCardList: React.FC = () => {
   return (
-    <div className="w-[90%] bg-gray-50 p-5 ">
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2 justify-start">
+    <div className="w-full bg-gray-50 p-3">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
         {lawyers.map((lawyer, idx) => (
-          <div
-            key={idx}
-            className="rounded-2xl overflow-hidden shadow-lg border border-[#A31ABE]/20 bg-white p-4"
-          >
-            <img
-              className="w-full h-[250px] object-cover rounded-xl"
-              src={lawyer.imageUrl}
-              alt={lawyer.name}
-            />
+          <div key={idx} className="rounded-2xl overflow-hidden shadow-lg border border-[#A31ABE]/20 bg-white p-4">
+            <img className="w-full h-[250px] object-cover rounded-xl" src={lawyer.imageUrl} alt={lawyer.name} />
             <div className="pt-4 flex justify-between items-center">
               <h2 className="text-lg font-bold text-black">{lawyer.name}</h2>
               <div className="flex items-center gap-1 text-[#A31ABE] font-semibold">
@@ -75,10 +68,7 @@ const LawyerCardList: React.FC = () => {
             </div>
             <div className="flex gap-3 mt-4 flex-wrap">
               {lawyer.categories.map((category, catIdx) => (
-                <button
-                  key={catIdx}
-                  className="bg-[#A31ABE] text-white font-semibold px-4 py-1 rounded-md hover:opacity-90 transition"
-                >
+                <button key={catIdx} className="bg-[#A31ABE] text-white font-semibold px-4 py-1 rounded-md hover:opacity-90 transition">
                   {category}
                 </button>
               ))}

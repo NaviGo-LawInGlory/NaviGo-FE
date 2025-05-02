@@ -11,24 +11,18 @@ const Filter: React.FC = () => {
   const [rating, setRating] = useState<number>(0);
 
   const toggleSpec = (spec: string) => {
-    setSelectedSpecs((prev) =>
-      prev.includes(spec) ? prev.filter((s) => s !== spec) : [...prev, spec]
-    );
+    setSelectedSpecs((prev) => (prev.includes(spec) ? prev.filter((s) => s !== spec) : [...prev, spec]));
   };
 
   return (
-    <div className="w-80 bg-white mt-10 mr-10 px-5 py-5 rounded-2xl shadow-lg">
+    <div className="bg-white px-5 py-5 rounded-2xl shadow-lg w-full">
       <h2 className="text-xl font-bold text-purple-700 mb-4">Filter</h2>
 
       <div className="mb-5">
         <h3 className="font-semibold mb-2">Specialization</h3>
         {specializations.map((spec) => (
           <label key={spec} className="flex items-center gap-2 mb-1 ">
-            <input
-              type="checkbox"
-              checked={selectedSpecs.includes(spec)}
-              onChange={() => toggleSpec(spec)}
-            />
+            <input type="checkbox" checked={selectedSpecs.includes(spec)} onChange={() => toggleSpec(spec)} />
             <span>{spec}</span>
           </label>
         ))}
@@ -69,15 +63,7 @@ const Filter: React.FC = () => {
         <h3 className="font-semibold mb-2">Rating</h3>
         <div className="flex gap-2 flex-wrap justify-center">
           {[1, 2, 3, 4, 5].map((star) => (
-            <button
-              key={star}
-              onClick={() => setRating(star)}
-              className={`flex items-center gap-1 px-2 py-1 rounded border ${
-                rating === star
-                  ? "bg-purple-500 text-white"
-                  : "border-gray-300 text-gray-500"
-              }`}
-            >
+            <button key={star} onClick={() => setRating(star)} className={`flex items-center gap-1 px-2 py-1 rounded border ${rating === star ? "bg-purple-500 text-white" : "border-gray-300 text-gray-500"}`}>
               {Array.from({ length: star }, (_, i) => (
                 <FaStar key={i} className="text-sm" />
               ))}
@@ -86,9 +72,7 @@ const Filter: React.FC = () => {
         </div>
       </div>
 
-      <button className="w-full bg-gradient-to-r from-purple-600 to-pink-500 text-white font-semibold py-2 rounded-md mt-4 hover:opacity-90 transition">
-        Apply
-      </button>
+      <button className="w-full bg-gradient-to-r from-purple-600 to-pink-500 text-white font-semibold py-2 rounded-md mt-4 hover:opacity-90 transition">Apply</button>
     </div>
   );
 };
