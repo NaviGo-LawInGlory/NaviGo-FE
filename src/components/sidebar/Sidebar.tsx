@@ -4,7 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import Image from "next/image";
 import { useState, useEffect } from "react";
-import { Menu, X } from "lucide-react";
+import { LogOut } from "lucide-react";
 import { useAuth } from "@/context/AuthContext";
 
 const navItems = [
@@ -42,33 +42,22 @@ const navItems = [
     name: "History",
     href: "/dashboard/history",
     icon: "/Sidebar/sidebar_history.png",
-    activeIcon: "/Sidebar/sidebar_history_active.png",
+    activeIcon: "/Sidebar/sidebar_history.png",
   },
 ];
 
-export default function Sidebar() {
+interface SidebarProps {
+  isMobileMenuOpen: boolean;
+  setIsMobileMenuOpen: (isOpen: boolean) => void;
+}
+
+export default function Sidebar({ isMobileMenuOpen, setIsMobileMenuOpen }: SidebarProps) {
   const pathname = usePathname();
-  const [mounted, setMounted] = useState(false);
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const { logout } = useAuth();
+  const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
     setMounted(true);
-  }, []);
-
-  useEffect(() => {
-    setIsMobileMenuOpen(false);
-  }, [pathname]);
-
-  useEffect(() => {
-    const handleResize = () => {
-      if (window.innerWidth >= 768) {
-        setIsMobileMenuOpen(false);
-      }
-    };
-
-    window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
   }, []);
 
   if (!mounted) {
@@ -77,46 +66,46 @@ export default function Sidebar() {
 
   return (
     <>
-      {/* Mobile Menu Button */}
-      <button onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)} className="md:hidden fixed top-4 left-4 z-50 p-2 rounded-lg bg-white shadow-lg">
-        {isMobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
-      </button>
-
-      {/* Mobile Menu Overlay */}
-      {isMobileMenuOpen && <div className="md:hidden fixed inset-0 bg-black bg-opacity-50 z-40" onClick={() => setIsMobileMenuOpen(false)} />}
-
-      {/* Sidebar */}
       <aside
         className={`
-          fixed top-0 left-0 h-screen bg-white border-r z-40 
-          w-[280px] md:w-[300px] lg:w-[340px]
+          fixed top-0 left-0 h-screen bg-white z-50 
+          w-[260px] md:w-[280px] lg:w-[300px]
           transition-all duration-300 ease-in-out
+          shadow-[5px_0_25px_-15px_rgba(0,0,0,0.15)]
+          overflow-y-auto pt-6 md:pt-4
           ${isMobileMenuOpen ? "translate-x-0" : "-translate-x-full md:translate-x-0"}
         `}
       >
-        <div className="px-6 py-8 flex justify-center">
+        <div className="px-4 md:px-6 py-6 md:py-8 flex justify-center">
           <Link href="/" className="flex items-center">
-            <Image src="/Sidebar/sidebar_logo_black.png" alt="NaviGo Logo" width={140} height={80} priority className="w-[140px] h-auto" />
+            <Image src="/Sidebar/sidebar_logo_black.png" alt="NaviGo Logo" width={100} height={70} priority className="w-[100px] md:w-[120px] h-auto" />
           </Link>
         </div>
 
-        <div className="flex justify-center my-6">
-          <div className="w-[90%] h-px bg-gray-200" />
+        <div className="flex justify-center my-4 md:my-6">
+          <div className="w-[85%] h-[1px] bg-gradient-to-r from-transparent via-gray-200 to-transparent" />
         </div>
 
-        <nav className="px-0">
-          <ul className="space-y-1 mt-8">
+        <nav className="px-0 pb-20">
+          <ul className="space-y-1 md:space-y-2 mt-4 md:mt-6">
             {navItems.map((item) => {
               const isActive = pathname === item.href;
 
               return (
-                <li key={item.name} className="relative">
-                  <div className={`absolute left-0 top-0 w-1 h-full ${isActive ? "bg-[#61008D]" : ""}`} />
+                <li key={item.name} className="relative mx-2 md:mx-4">
                   <Link
                     href={item.href}
-                    className={`flex items-center px-3 py-4 text-sm md:text-md pl-6 transition-colors relative ${isActive ? "bg-linear-to-bl from-[#FFFFFF] to-[#FCF2FF] text-[#000000] font-medium" : "text-gray-700 hover:bg-gray-50"}`}
+                    className={`
+                      flex items-center px-4 md:px-5 py-3 md:py-4 text-sm
+                      rounded-xl transition-all duration-200
+                      ${isActive ? "bg-gradient-to-r from-purple-50 to-purple-100 text-purple-900 font-medium shadow-sm" : "text-gray-600 hover:bg-purple-50 hover:text-purple-800"}
+                    `}
+                    onClick={() => setIsMobileMenuOpen(false)}
                   >
-                    <Image src={isActive ? item.activeIcon : item.icon} alt={`${item.name} icon`} width={20} height={20} className="mr-3" />
+                    <div className="relative">
+                      <Image src={isActive ? item.activeIcon : item.icon} alt={`${item.name} icon`} width={20} height={20} className={`mr-3 md:mr-4 ${isActive ? "drop-shadow-md" : ""}`} />
+                      {isActive && <div className="absolute -left-4 md:-left-5 top-1/2 -translate-y-1/2 w-1.5 md:w-2 h-6 md:h-8 rounded-r-full bg-gradient-to-b from-[#61008D] to-[#A31ABE]" />}
+                    </div>
                     {item.name}
                   </Link>
                 </li>
@@ -124,9 +113,19 @@ export default function Sidebar() {
             })}
           </ul>
 
-          <div className="mt-auto px-6 py-4">
-            <button onClick={logout} className="w-full py-2 px-4 bg-purple-100 text-purple-800 rounded-lg flex items-center justify-center gap-2 hover:bg-purple-200 transition-colors">
-              <span>Logout</span>
+          <div className="fixed bottom-4 md:bottom-8 w-full px-4 md:px-8 max-w-[260px] md:max-w-[280px] lg:max-w-[300px]">
+            <button
+              onClick={() => {
+                logout();
+                setIsMobileMenuOpen(false);
+              }}
+              className="w-full py-2 md:py-3 px-4 rounded-xl flex items-center justify-center gap-2 md:gap-3
+                bg-gradient-to-r from-purple-50 to-purple-100 text-purple-700 
+                hover:shadow-md transition-all duration-200 hover:from-purple-100 hover:to-purple-200
+                text-sm md:text-base"
+            >
+              <LogOut className="w-3.5 h-3.5 md:w-4 md:h-4" />
+              <span className="font-medium">Logout</span>
             </button>
           </div>
         </nav>
