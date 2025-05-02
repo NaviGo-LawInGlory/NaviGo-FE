@@ -1,6 +1,5 @@
 "use client";
 
-// components/GoogleButton.js
 import { FcGoogle } from "react-icons/fc";
 
 const BtnGoogle= () =>{
