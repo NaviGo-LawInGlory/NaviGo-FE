@@ -15,9 +15,7 @@ export default function DocumentGenerator() {
     tanggal: "",
   });
 
-  const handleInputChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-  ) => {
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
     setFormData((prev) => ({
       ...prev,
@@ -34,24 +32,17 @@ export default function DocumentGenerator() {
   };
 
   if (!user) {
-    return (
-      <div className="flex justify-center items-center h-screen">
-        Loading...
-      </div>
-    );
+    return <div className="flex justify-center items-center h-screen">Loading...</div>;
   }
 
   return (
     <div className="flex flex-col h-full bg-gray-50">
       <div className="flex-1 p-3 md:p-4 lg:p-6 overflow-y-auto">
-        <div className="max-w-full lg:max-w-[95%] xl:max-w-[90%] mx-auto space-y-4 md:space-y-6">
+        <div className="max-w-full lg:max-w-[95%] xl:max-w-[90%] mx-auto space-y-4 md:space-y-6 pb-20">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 md:gap-8">
-            <div className="space-y-5 pb-20">
+            <div className="space-y-5">
               <div className="bg-white shadow-md rounded-xl md:rounded-2xl p-4 md:p-6">
-                <label
-                  htmlFor="judul"
-                  className="block text-lg font-semibold mb-3 text-gray-800"
-                >
+                <label htmlFor="judul" className="block text-lg font-semibold mb-3 text-gray-800">
                   Judul
                 </label>
                 <input
@@ -66,10 +57,7 @@ export default function DocumentGenerator() {
               </div>
 
               <div className="bg-white shadow-md rounded-xl md:rounded-2xl p-4 md:p-6">
-                <label
-                  htmlFor="perjanjian"
-                  className="block text-lg font-semibold mb-3 text-gray-800"
-                >
+                <label htmlFor="perjanjian" className="block text-lg font-semibold mb-3 text-gray-800">
                   Perjanjian
                 </label>
                 <input
@@ -114,10 +102,7 @@ export default function DocumentGenerator() {
               </div>
 
               <div className="bg-white shadow-md rounded-xl md:rounded-2xl p-4 md:p-6">
-                <label
-                  htmlFor="deskripsi"
-                  className="block text-lg font-semibold mb-3 text-gray-800"
-                >
+                <label htmlFor="deskripsi" className="block text-lg font-semibold mb-3 text-gray-800">
                   Deskripsi
                 </label>
                 <textarea
@@ -132,10 +117,7 @@ export default function DocumentGenerator() {
               </div>
 
               <div className="bg-white shadow-md rounded-xl md:rounded-2xl p-4 md:p-6">
-                <label
-                  htmlFor="tanggal"
-                  className="block text-lg font-semibold mb-3 text-gray-800"
-                >
+                <label htmlFor="tanggal" className="block text-lg font-semibold mb-3 text-gray-800">
                   Tanggal
                 </label>
                 <input
@@ -148,34 +130,23 @@ export default function DocumentGenerator() {
                 />
               </div>
 
-              <button
-                onClick={handleGenerateDocument}
-                className="w-full px-4 py-3 text-white bg-gradient-to-r from-purple-600 to-purple-700 rounded-xl hover:opacity-90 focus:outline-none transition-all shadow-md font-medium"
-              >
+              <button onClick={handleGenerateDocument} className="w-full px-4 py-3 text-white bg-gradient-to-r from-purple-600 to-purple-700 rounded-xl hover:opacity-90 focus:outline-none transition-all shadow-md font-medium">
                 Generate Dokumen
               </button>
             </div>
 
-            <div className="relative lg:h-[calc(100vh-2rem)]">
-              <div className="bg-white shadow-md rounded-xl md:rounded-2xl p-4 md:p-6 lg:sticky lg:top-6 h-full flex flex-col">
+            <div className="lg:sticky self-start">
+              <div className="bg-white shadow-md rounded-xl md:rounded-2xl p-4 md:p-6 flex flex-col h-full">
                 <h2 className="text-xl font-semibold mb-4 text-gray-800 flex items-center gap-2">
                   <FileText className="w-5 h-5 text-purple-700" />
                   Preview Dokumen
                 </h2>
 
-                <div
-                  className="flex-1 border rounded-lg p-4 bg-gray-50 overflow-auto flex flex-col mb-4"
-                  style={{ minHeight: "500px" }}
-                >
-                  <div className="flex-1 flex items-center justify-center text-gray-500">
-                    Preview dokumen akan ditampilkan di sini
-                  </div>
+                <div className="flex-1 border rounded-lg p-4 bg-gray-50 overflow-auto flex flex-col mb-4" style={{ minHeight: "500px" }}>
+                  <div className="flex-1 flex items-center justify-center text-gray-500">Preview dokumen akan ditampilkan di sini</div>
                 </div>
 
-                <button
-                  onClick={handleDownloadDocument}
-                  className="w-full px-4 py-3 text-white bg-gradient-to-r from-purple-600 to-purple-700 rounded-xl hover:opacity-90 focus:outline-none transition-all shadow-md font-medium mt-auto"
-                >
+                <button onClick={handleDownloadDocument} className="w-full px-4 py-3 text-white bg-gradient-to-r from-purple-600 to-purple-700 rounded-xl hover:opacity-90 focus:outline-none transition-all shadow-md font-medium mt-auto">
                   Download Dokumen
                 </button>
               </div>
