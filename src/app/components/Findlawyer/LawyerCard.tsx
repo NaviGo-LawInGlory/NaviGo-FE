@@ -1,6 +1,7 @@
 import React from "react";
 import { FaStar } from "react-icons/fa";
 import { HiLocationMarker } from "react-icons/hi";
+import Image from "next/image";
 
 export interface LawyerCardProps {
   name: string;
@@ -13,36 +14,36 @@ export interface LawyerCardProps {
 
 const lawyers: LawyerCardProps[] = [
   {
-    name: "Elgin Brian Wahyu B.",
+    name: "Elgin Brian",
     rating: 4.8,
-    priceRange: "Rp500.000 - Rp1.000.000",
+    priceRange: "Rp1.000.000 - Rp1.200.000",
     location: "Malang",
     categories: ["Haki", "Pajak"],
-    imageUrl: "Profil/ElginBrian.png",
+    imageUrl: "/Profil/Elgin.jpg",
   },
   {
-    name: "Muhammad Rizqi",
+    name: "Rizqi Aditya",
+    rating: 4.6,
+    priceRange: "Rp700.000 - Rp1.200.000",
+    location: "Banjarnegara",
+    categories: ["Kontrak", "Perdata"],
+    imageUrl: "/Profil/Rizqi.jpg",
+  },
+  {
+    name: "Andreas Bagasgoro",
+    rating: 4.6,
+    priceRange: "Rp700.000 - Rp1.200.000",
+    location: "Batam",
+    categories: ["Kontrak", "Perdata"],
+    imageUrl: "/Profil/Andre.jpg",
+  },
+  {
+    name: "Gantang Satria",
     rating: 4.6,
     priceRange: "Rp700.000 - Rp1.200.000",
     location: "Surabaya",
     categories: ["Kontrak", "Perdata"],
-    imageUrl: "Profil/Rizqi.png",
-  },
-  {
-    name: "Muhammad Rizqi",
-    rating: 4.6,
-    priceRange: "Rp700.000 - Rp1.200.000",
-    location: "Surabaya",
-    categories: ["Kontrak", "Perdata"],
-    imageUrl: "Profil/Rizqi.png",
-  },
-  {
-    name: "Muhammad Rizqi",
-    rating: 4.6,
-    priceRange: "Rp700.000 - Rp1.200.000",
-    location: "Surabaya",
-    categories: ["Kontrak", "Perdata"],
-    imageUrl: "Profil/Rizqi.png",
+    imageUrl: "/Profil/Rizqi.png",
   },
 ];
 
@@ -52,8 +53,16 @@ const LawyerCardList: React.FC = () => {
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
         {lawyers.map((lawyer, idx) => (
           <div key={idx} className="rounded-2xl overflow-hidden shadow-md bg-white p-5">
-            <div className="overflow-hidden rounded-xl">
-              <img className="w-full h-[250px] object-cover hover:scale-105 transition-transform duration-300" src={lawyer.imageUrl} alt={lawyer.name} />
+            <div className="overflow-hidden rounded-xl relative h-[250px]">
+              <img
+                className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
+                src={lawyer.imageUrl}
+                alt={lawyer.name}
+                onError={(e) => {
+                  e.currentTarget.onerror = null;
+                  e.currentTarget.src = "/placeholder-lawyer.png"; // Fallback image
+                }}
+              />
             </div>
             <div className="pt-4 flex justify-between items-center">
               <h2 className="text-lg font-bold text-gray-800">{lawyer.name}</h2>

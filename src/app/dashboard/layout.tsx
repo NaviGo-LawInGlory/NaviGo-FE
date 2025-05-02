@@ -43,18 +43,13 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
 
   return (
     <div className="h-screen flex flex-col overflow-hidden">
-
       <Sidebar isMobileMenuOpen={isMobileMenuOpen} setIsMobileMenuOpen={setIsMobileMenuOpen} />
 
       <div className="flex-1 flex flex-col overflow-hidden">
-
         <DashboardHeader title={getPageTitle(pathname)} isMobileMenuOpen={isMobileMenuOpen} setIsMobileMenuOpen={setIsMobileMenuOpen} />
 
-
-        <main className="flex-1 ml-0 md:ml-[280px] lg:ml-[300px] overflow-y-auto">{children}</main>
+        <main className="flex-1 ml-0 md:ml-[280px] lg:ml-[300px] overflow-hidden">{children}</main>
       </div>
     </div>
   );
 }
-
-
