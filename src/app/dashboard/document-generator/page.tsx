@@ -4,9 +4,8 @@ import { useAuth } from "@/context/AuthContext";
 import { useState } from "react";
 import { FileText } from "lucide-react";
 
-export default function DocumentGeneratorPage() {
+export default function DocumentGenerator() {
   const { user } = useAuth();
-
   const [formData, setFormData] = useState({
     judul: "",
     perjanjian: "",
@@ -16,7 +15,9 @@ export default function DocumentGeneratorPage() {
     tanggal: "",
   });
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+  const handleInputChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
     const { name, value } = e.target;
     setFormData((prev) => ({
       ...prev,
@@ -33,7 +34,11 @@ export default function DocumentGeneratorPage() {
   };
 
   if (!user) {
-    return <div className="flex justify-center items-center h-screen">Loading...</div>;
+    return (
+      <div className="flex justify-center items-center h-screen">
+        Loading...
+      </div>
+    );
   }
 
   return (
@@ -43,7 +48,10 @@ export default function DocumentGeneratorPage() {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 md:gap-8">
             <div className="space-y-5 pb-20">
               <div className="bg-white shadow-md rounded-xl md:rounded-2xl p-4 md:p-6">
-                <label htmlFor="judul" className="block text-lg font-semibold mb-3 text-gray-800">
+                <label
+                  htmlFor="judul"
+                  className="block text-lg font-semibold mb-3 text-gray-800"
+                >
                   Judul
                 </label>
                 <input
@@ -58,7 +66,10 @@ export default function DocumentGeneratorPage() {
               </div>
 
               <div className="bg-white shadow-md rounded-xl md:rounded-2xl p-4 md:p-6">
-                <label htmlFor="perjanjian" className="block text-lg font-semibold mb-3 text-gray-800">
+                <label
+                  htmlFor="perjanjian"
+                  className="block text-lg font-semibold mb-3 text-gray-800"
+                >
                   Perjanjian
                 </label>
                 <input
@@ -103,7 +114,10 @@ export default function DocumentGeneratorPage() {
               </div>
 
               <div className="bg-white shadow-md rounded-xl md:rounded-2xl p-4 md:p-6">
-                <label htmlFor="deskripsi" className="block text-lg font-semibold mb-3 text-gray-800">
+                <label
+                  htmlFor="deskripsi"
+                  className="block text-lg font-semibold mb-3 text-gray-800"
+                >
                   Deskripsi
                 </label>
                 <textarea
@@ -118,7 +132,10 @@ export default function DocumentGeneratorPage() {
               </div>
 
               <div className="bg-white shadow-md rounded-xl md:rounded-2xl p-4 md:p-6">
-                <label htmlFor="tanggal" className="block text-lg font-semibold mb-3 text-gray-800">
+                <label
+                  htmlFor="tanggal"
+                  className="block text-lg font-semibold mb-3 text-gray-800"
+                >
                   Tanggal
                 </label>
                 <input
@@ -131,7 +148,10 @@ export default function DocumentGeneratorPage() {
                 />
               </div>
 
-              <button onClick={handleGenerateDocument} className="w-full px-4 py-3 text-white bg-gradient-to-r from-purple-600 to-purple-700 rounded-xl hover:opacity-90 focus:outline-none transition-all shadow-md font-medium">
+              <button
+                onClick={handleGenerateDocument}
+                className="w-full px-4 py-3 text-white bg-gradient-to-r from-purple-600 to-purple-700 rounded-xl hover:opacity-90 focus:outline-none transition-all shadow-md font-medium"
+              >
                 Generate Dokumen
               </button>
             </div>
@@ -143,11 +163,19 @@ export default function DocumentGeneratorPage() {
                   Preview Dokumen
                 </h2>
 
-                <div className="flex-1 border rounded-lg p-4 bg-gray-50 overflow-auto flex flex-col mb-4" style={{ minHeight: "500px" }}>
-                  <div className="flex-1 flex items-center justify-center text-gray-500">Preview dokumen akan ditampilkan di sini</div>
+                <div
+                  className="flex-1 border rounded-lg p-4 bg-gray-50 overflow-auto flex flex-col mb-4"
+                  style={{ minHeight: "500px" }}
+                >
+                  <div className="flex-1 flex items-center justify-center text-gray-500">
+                    Preview dokumen akan ditampilkan di sini
+                  </div>
                 </div>
 
-                <button onClick={handleDownloadDocument} className="w-full px-4 py-3 text-white bg-gradient-to-r from-purple-600 to-purple-700 rounded-xl hover:opacity-90 focus:outline-none transition-all shadow-md font-medium mt-auto">
+                <button
+                  onClick={handleDownloadDocument}
+                  className="w-full px-4 py-3 text-white bg-gradient-to-r from-purple-600 to-purple-700 rounded-xl hover:opacity-90 focus:outline-none transition-all shadow-md font-medium mt-auto"
+                >
                   Download Dokumen
                 </button>
               </div>
