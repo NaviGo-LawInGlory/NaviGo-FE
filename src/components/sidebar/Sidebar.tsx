@@ -42,7 +42,7 @@ const navItems = [
     name: "History",
     href: "/dashboard/history",
     icon: "/Sidebar/sidebar_history.png",
-    activeIcon: "/Sidebar/sidebar_history_active.png",
+    activeIcon: "/Sidebar/sidebar_history.png",
   },
 ];
 
@@ -66,7 +66,6 @@ export default function Sidebar({ isMobileMenuOpen, setIsMobileMenuOpen }: Sideb
 
   return (
     <>
-
       <aside
         className={`
           fixed top-0 left-0 h-screen bg-white z-50 
@@ -134,4 +133,3 @@ export default function Sidebar({ isMobileMenuOpen, setIsMobileMenuOpen }: Sideb
     </>
   );
 }
-
