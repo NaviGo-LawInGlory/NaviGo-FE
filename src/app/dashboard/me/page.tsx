@@ -11,11 +11,10 @@ export default function DashboardPage() {
   }
 
   return (
-    <div className="flex flex-col h-screen bg-gray-50">
+    <div className="flex flex-col h-full bg-gray-50">
       <div className="flex-1 p-3 md:p-4 lg:p-6 overflow-y-auto">
-        <div className="max-w-full lg:max-w-[95%] xl:max-w-[90%] mx-auto space-y-4 md:space-y-6">
+        <div className="max-w-full lg:max-w-[95%] xl:max-w-[90%] mx-auto space-y-4 md:space-y-6 pb-20">
           <h1 className="text-xl sm:text-2xl md:text-3xl font-bold mb-4 md:mb-6 text-purple-900 pl-2">Welcome, {user.name}!</h1>
-
 
           <div className="bg-white shadow-md rounded-xl md:rounded-2xl p-4 md:p-6">
             <div className="flex items-center gap-3 md:gap-4 mb-4">
@@ -62,7 +61,7 @@ export default function DashboardPage() {
               </div>
 
               <div className="space-y-4">
-                <div className="flex items-center gap-3">
+                <div className="flex itemscenter gap-3">
                   <div className="p-2 bg-purple-100 rounded-lg">
                     <MapPin className="w-5 h-5 text-purple-700" />
                   </div>
@@ -85,9 +84,7 @@ export default function DashboardPage() {
             </div>
           </div>
 
-
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
-
             <div className="bg-white shadow-md rounded-xl md:rounded-2xl p-4 md:p-6">
               <h3 className="text-xl font-semibold mb-4 flex items-center gap-2">
                 <FileText className="w-5 h-5 text-purple-700" />
@@ -112,7 +109,6 @@ export default function DashboardPage() {
               </div>
             </div>
 
-
             <div className="bg-white shadow-md rounded-xl md:rounded-2xl p-4 md:p-6">
               <h3 className="text-xl font-semibold mb-4 flex items-center gap-2">
                 <Clock className="w-5 h-5 text-purple-700" />
@@ -127,7 +123,6 @@ export default function DashboardPage() {
             </div>
           </div>
 
-
           <div className="bg-gradient-to-r from-purple-600 to-purple-700 text-white shadow-md rounded-xl md:rounded-2xl p-4 md:p-6">
             <h3 className="text-lg md:text-xl font-semibold mb-2">Upgrade to NaviGo Premium</h3>
             <p className="mb-3 md:mb-4 opacity-90 text-sm md:text-base">Get unlimited access to all features and priority support</p>
@@ -138,4 +133,3 @@ export default function DashboardPage() {
     </div>
   );
 }
-
