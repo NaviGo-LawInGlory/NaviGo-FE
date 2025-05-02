@@ -11,38 +11,38 @@ const navItems = [
   {
     name: "My Profile",
     href: "/dashboard/me",
-    icon: "/Sidebar/sidebar_home.png",
-    activeIcon: "/Sidebar/sidebar_home_active.png",
+    icon: "/Sidebar/homeIcon.svg",
+    activeIcon: "/Sidebar/homeActive.svg",
   },
   {
     name: "Document Generator",
     href: "/dashboard/document-generator",
-    icon: "/Sidebar/sidebar_document.png",
-    activeIcon: "/Sidebar/sidebar_document_active.png",
+    icon: "/Sidebar/documentIcon.svg",
+    activeIcon: "/Sidebar/documentActive.svg",
   },
   {
     name: "Document Analyzer",
     href: "/dashboard/document-analyzer",
-    icon: "/Sidebar/sidebar_analyzer.png",
-    activeIcon: "/Sidebar/sidebar_analyzer_active.png",
+    icon: "/Sidebar/analyzerIcon.svg",
+    activeIcon: "/Sidebar/analyzerActive.svg",
   },
   {
     name: "AI Chat Bot",
     href: "/dashboard/chat",
-    icon: "/Sidebar/sidebar_chatbot.png",
-    activeIcon: "/Sidebar/sidebar_chatbot_active.png",
+    icon: "/Sidebar/chatBotIcon.svg",
+    activeIcon: "/Sidebar/chatBotActive.svg",
   },
   {
     name: "Find Lawyer",
     href: "/dashboard/find-lawyer",
-    icon: "/Sidebar/sidebar_lawyer.png",
-    activeIcon: "/Sidebar/sidebar_lawyer_active.png",
+    icon: "/Sidebar/lawyerIcon.svg",
+    activeIcon: "/Sidebar/lawyerActive.svg",
   },
   {
     name: "History",
     href: "/dashboard/history",
-    icon: "/Sidebar/sidebar_history.png",
-    activeIcon: "/Sidebar/sidebar_history.png",
+    icon: "/Sidebar/historyIcon.svg",
+    activeIcon: "/Sidebar/historyActive.svg",
   },
 ];
 
@@ -78,7 +78,7 @@ export default function Sidebar({ isMobileMenuOpen, setIsMobileMenuOpen }: Sideb
       >
         <div className="px-4 md:px-6 py-6 md:py-8 flex justify-center">
           <Link href="/" className="flex items-center">
-            <Image src="/Sidebar/sidebar_logo_black.png" alt="NaviGo Logo" width={100} height={70} priority className="w-[100px] md:w-[120px] h-auto" />
+            <Image src="/Sidebar/logoNavigoHitam.svg" alt="NaviGo Logo" width={100} height={70} priority className="w-[100px] md:w-[120px] h-auto" />
           </Link>
         </div>
 

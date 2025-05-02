@@ -43,7 +43,7 @@ const lawyers: LawyerCardProps[] = [
     priceRange: "Rp700.000 - Rp1.200.000",
     location: "Surabaya",
     categories: ["Kontrak", "Perdata"],
-    imageUrl: "/Profil/Rizqi.png",
+    imageUrl: "/Profil/Rizqi.jpg",
   },
 ];
 
