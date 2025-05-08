@@ -1,16 +1,47 @@
 import React, { useState } from "react";
 
-const Sorter: React.FC = () => {
+interface SorterProps {
+  onSort: (sortOption: { sort_by: "rating" | "experience" | "name"; sort_order: "asc" | "desc" }) => void;
+}
+
+const Sorter: React.FC<SorterProps> = ({ onSort }) => {
   const [selected, setSelected] = useState<string>("");
 
   const handleChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    setSelected(event.target.value);
+    const value = event.target.value;
+    setSelected(value);
+
+    switch (value) {
+      case "rating_desc":
+        onSort({ sort_by: "rating", sort_order: "desc" });
+        break;
+      case "rating_asc":
+        onSort({ sort_by: "rating", sort_order: "asc" });
+        break;
+      case "experience_desc":
+        onSort({ sort_by: "experience", sort_order: "desc" });
+        break;
+      case "experience_asc":
+        onSort({ sort_by: "experience", sort_order: "asc" });
+        break;
+      case "name_asc":
+        onSort({ sort_by: "name", sort_order: "asc" });
+        break;
+      case "name_desc":
+        onSort({ sort_by: "name", sort_order: "desc" });
+        break;
+      default:
+        onSort({ sort_by: "rating", sort_order: "desc" });
+    }
   };
 
   const options = [
-    { value: "nama", label: "Nama" },
-    { value: "gaji", label: "Gaji" },
-    { value: "umur", label: "Umur" },
+    { value: "rating_desc", label: "Rating (High to Low)" },
+    { value: "rating_asc", label: "Rating (Low to High)" },
+    { value: "experience_desc", label: "Experience (Most)" },
+    { value: "experience_asc", label: "Experience (Least)" },
+    { value: "name_asc", label: "Name (A-Z)" },
+    { value: "name_desc", label: "Name (Z-A)" },
   ];
 
   return (
@@ -21,7 +52,7 @@ const Sorter: React.FC = () => {
       <div className="relative">
         <select id="filter" value={selected} onChange={handleChange} className="w-40 p-3 pl-4 pr-10 rounded-xl shadow-sm border-0 bg-white text-gray-700 appearance-none focus:outline-none focus:ring-2 focus:ring-purple-500">
           <option value="" className="font-medium" disabled hidden>
-            --Pilih--
+            --Select--
           </option>
           {options.map((option) => (
             <option key={option.value} value={option.value} className="py-2">
@@ -40,3 +71,4 @@ const Sorter: React.FC = () => {
 };
 
 export default Sorter;
+

@@ -1,17 +1,40 @@
 import { useState } from "react";
 import { FaStar } from "react-icons/fa";
+import { LawyerSearchParams } from "@/types/models/lawyer";
+
+interface FilterProps {
+  onFilter: (filters: Partial<LawyerSearchParams>) => void;
+}
 
 const specializations = ["Haki", "Pidana", "Pajak", "Bisnis"];
 
-const Filter: React.FC = () => {
+const Filter: React.FC<FilterProps> = ({ onFilter }) => {
   const [selectedSpecs, setSelectedSpecs] = useState<string[]>([]);
-  const [minPrize, setMinPrize] = useState("");
-  const [maxPrize, setMaxPrize] = useState("");
+  const [minPrice, setMinPrice] = useState("");
+  const [maxPrice, setMaxPrice] = useState("");
   const [location, setLocation] = useState("");
   const [rating, setRating] = useState<number>(0);
 
   const toggleSpec = (spec: string) => {
     setSelectedSpecs((prev) => (prev.includes(spec) ? prev.filter((s) => s !== spec) : [...prev, spec]));
+  };
+
+  const handleApplyFilter = () => {
+    const filters: Partial<LawyerSearchParams> = {};
+
+    if (selectedSpecs.length > 0) {
+      filters.specialization = selectedSpecs;
+    }
+
+    if (location) {
+      filters.location = location;
+    }
+
+    if (rating > 0) {
+      filters.rating = rating;
+    }
+
+    onFilter(filters);
   };
 
   return (
@@ -34,16 +57,16 @@ const Filter: React.FC = () => {
         <input
           type="text"
           placeholder="Rp."
-          value={minPrize}
-          onChange={(e) => setMinPrize(e.target.value)}
+          value={minPrice}
+          onChange={(e) => setMinPrice(e.target.value)}
           className="w-full mb-3 border-0 bg-gray-50 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-purple-500 shadow-sm transition duration-200"
         />
         <label className="text-sm text-gray-500 mb-1 block">Maximum</label>
         <input
           type="text"
           placeholder="Rp."
-          value={maxPrize}
-          onChange={(e) => setMaxPrize(e.target.value)}
+          value={maxPrice}
+          onChange={(e) => setMaxPrice(e.target.value)}
           className="w-full mb-3 border-0 bg-gray-50 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-purple-500 shadow-sm transition duration-200"
         />
       </div>
@@ -65,7 +88,7 @@ const Filter: React.FC = () => {
           {[1, 2, 3, 4, 5].map((star) => (
             <button
               key={star}
-              onClick={() => setRating(star)}
+              onClick={() => setRating(rating === star ? 0 : star)}
               className={`flex items-center gap-1 px-4 py-2 rounded-xl ${rating === star ? "bg-gradient-to-r from-purple-600 to-purple-700 text-white shadow-md" : "bg-white border border-gray-200 text-gray-600 hover:bg-gray-50"}`}
             >
               {Array.from({ length: star }, (_, i) => (
@@ -76,9 +99,12 @@ const Filter: React.FC = () => {
         </div>
       </div>
 
-      <button className="w-full bg-gradient-to-r from-purple-600 to-purple-700 text-white font-semibold py-3 px-4 rounded-xl mt-4 hover:shadow-md transition-all duration-200">Apply Filter</button>
+      <button onClick={handleApplyFilter} className="w-full bg-gradient-to-r from-purple-600 to-purple-700 text-white font-semibold py-3 px-4 rounded-xl mt-4 hover:shadow-md transition-all duration-200">
+        Apply Filter
+      </button>
     </div>
   );
 };
 
 export default Filter;
+

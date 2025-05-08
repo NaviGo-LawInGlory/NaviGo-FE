@@ -14,10 +14,18 @@ export default function Home() {
   return (
     <>
       <Navbar />
-      <HeroSection />
-      <FeatureSection />
-      <LawSection />
-      <PricingSection />
+      <section id="hero">
+        <HeroSection />
+      </section>
+      <section id="features">
+        <FeatureSection />
+      </section>
+      <section id="law">
+        <LawSection />
+      </section>
+      <section id="pricing">
+        <PricingSection />
+      </section>
       <Footer />
     </>
   );

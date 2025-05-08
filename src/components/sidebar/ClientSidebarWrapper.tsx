@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import Sidebar from "./Sidebar";
 import DashboardHeader from "@/components/dashboard/DashboardHeader";
+import { usePathname } from "next/navigation";
 
 declare global {
   interface Window {
@@ -14,6 +15,17 @@ declare global {
 export default function ClientSidebarWrapper() {
   const [mounted, setMounted] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const pathname = usePathname();
+
+  const getPageTitle = (path: string) => {
+    if (path === "/dashboard/me") return "My Profile";
+    if (path === "/dashboard/document-generator") return "Document Generator";
+    if (path === "/dashboard/document-analyzer") return "Document Analyzer";
+    if (path === "/dashboard/chat") return "AI Chat Bot";
+    if (path === "/dashboard/find-lawyer") return "Find Lawyer";
+    if (path === "/dashboard/history") return "History";
+    return "Dashboard";
+  };
 
   useEffect(() => {
     setMounted(true);
@@ -41,4 +53,12 @@ export default function ClientSidebarWrapper() {
   if (!mounted) {
     return null;
   }
+
+  return (
+    <>
+      <Sidebar isMobileMenuOpen={isMobileMenuOpen} setIsMobileMenuOpen={setIsMobileMenuOpen} />
+      <DashboardHeader title={getPageTitle(pathname)} isMobileMenuOpen={isMobileMenuOpen} setIsMobileMenuOpen={setIsMobileMenuOpen} />
+    </>
+  );
 }
+

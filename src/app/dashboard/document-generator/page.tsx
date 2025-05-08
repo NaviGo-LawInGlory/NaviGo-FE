@@ -3,10 +3,13 @@
 import { useAuth } from "@/context/AuthContext";
 import { useState } from "react";
 import { FileText } from "lucide-react";
+import { generateDocument, downloadDocument } from "@/services/api";
+import { DocumentGeneratorRequest, GeneratedDocument } from "@/types/models";
+import { LoadingSpinner, SkeletonLoader } from "@/components/ui/LoadingIndicators";
 
 export default function DocumentGenerator() {
-  const { user } = useAuth();
-  const [formData, setFormData] = useState({
+  const { user, token } = useAuth();
+  const [formData, setFormData] = useState<DocumentGeneratorRequest>({
     judul: "",
     perjanjian: "",
     pihak1: "",
@@ -14,6 +17,9 @@ export default function DocumentGenerator() {
     deskripsi: "",
     tanggal: "",
   });
+  const [generatedDoc, setGeneratedDoc] = useState<GeneratedDocument | null>(null);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
@@ -23,16 +29,51 @@ export default function DocumentGenerator() {
     }));
   };
 
-  const handleGenerateDocument = () => {
-    console.log("Generating document with:", formData);
+  const handleGenerateDocument = async () => {
+    if (!token) return;
+
+    try {
+      setLoading(true);
+      setError(null);
+      const result = await generateDocument(token, formData);
+      setGeneratedDoc(result);
+    } catch (err) {
+      setError("Failed to generate document");
+      console.error(err);
+    } finally {
+      setLoading(false);
+    }
   };
 
-  const handleDownloadDocument = () => {
-    console.log("Downloading document");
+  const handleDownloadDocument = async () => {
+    if (!token || !generatedDoc?.id) return;
+
+    try {
+      const blob = await downloadDocument(token, generatedDoc.id);
+
+      // Create download link
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = `${formData.judul || "document"}.pdf`;
+      document.body.appendChild(a);
+      a.click();
+
+      // Cleanup
+      window.URL.revokeObjectURL(url);
+      document.body.removeChild(a);
+    } catch (err) {
+      setError("Failed to download document");
+      console.error(err);
+    }
   };
 
   if (!user) {
-    return <div className="flex justify-center items-center h-screen">Loading...</div>;
+    return (
+      <div className="flex justify-center items-center h-screen">
+        <LoadingSpinner size="lg" />
+      </div>
+    );
   }
 
   return (
@@ -130,8 +171,19 @@ export default function DocumentGenerator() {
                 />
               </div>
 
-              <button onClick={handleGenerateDocument} className="w-full px-4 py-3 text-white bg-gradient-to-r from-purple-600 to-purple-700 rounded-xl hover:opacity-90 focus:outline-none transition-all shadow-md font-medium">
-                Generate Dokumen
+              <button
+                onClick={handleGenerateDocument}
+                className="w-full px-4 py-3 text-white bg-gradient-to-r from-purple-600 to-purple-700 rounded-xl hover:opacity-90 focus:outline-none transition-all shadow-md font-medium disabled:opacity-50 flex items-center justify-center"
+                disabled={loading}
+              >
+                {loading ? (
+                  <>
+                    <LoadingSpinner size="sm" color="white" />
+                    <span className="ml-2">Generating...</span>
+                  </>
+                ) : (
+                  "Generate Dokumen"
+                )}
               </button>
             </div>
 
@@ -143,11 +195,26 @@ export default function DocumentGenerator() {
                 </h2>
 
                 <div className="flex-1 border rounded-lg p-4 bg-gray-50 overflow-auto flex flex-col mb-4" style={{ minHeight: "500px" }}>
-                  <div className="flex-1 flex items-center justify-center text-gray-500">Preview dokumen akan ditampilkan di sini</div>
+                  {loading ? (
+                    <div className="flex-1 flex flex-col items-center justify-center space-y-4">
+                      <LoadingSpinner size="lg" />
+                      <p className="text-purple-600 font-medium">Generating document...</p>
+                    </div>
+                  ) : error ? (
+                    <div className="flex-1 flex items-center justify-center text-red-500">{error}</div>
+                  ) : generatedDoc?.content ? (
+                    <div className="whitespace-pre-wrap">{generatedDoc.content}</div>
+                  ) : (
+                    <div className="flex-1 flex items-center justify-center text-gray-500">Preview dokumen akan ditampilkan di sini</div>
+                  )}
                 </div>
 
-                <button onClick={handleDownloadDocument} className="w-full px-4 py-3 text-white bg-gradient-to-r from-purple-600 to-purple-700 rounded-xl hover:opacity-90 focus:outline-none transition-all shadow-md font-medium mt-auto">
-                  Download Dokumen
+                <button
+                  onClick={handleDownloadDocument}
+                  disabled={!generatedDoc}
+                  className="w-full px-4 py-3 text-white bg-gradient-to-r from-purple-600 to-purple-700 rounded-xl hover:opacity-90 focus:outline-none transition-all shadow-md font-medium mt-auto disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center"
+                >
+                  {loading ? <LoadingSpinner size="sm" color="white" /> : "Download Dokumen"}
                 </button>
               </div>
             </div>

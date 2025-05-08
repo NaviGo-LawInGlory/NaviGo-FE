@@ -3,12 +3,15 @@
 import { useState } from "react";
 import Image from "next/image";
 import { useAuth } from "@/context/AuthContext";
+import { analyzeDocument } from "@/services/api";
+import { DocumentAnalysisResult } from "@/types/models";
+import { LoadingSpinner, SkeletonLoader } from "@/components/ui/LoadingIndicators";
 
 export default function DocumentAnalyzer() {
-  const { user } = useAuth();
+  const { user, token } = useAuth();
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
-  const [analysisResult, setAnalysisResult] = useState({
+  const [analysisResult, setAnalysisResult] = useState<DocumentAnalysisResult>({
     judul: "",
     tanggal: "",
     pihak: "",
@@ -16,9 +19,15 @@ export default function DocumentAnalyzer() {
     pihak2: "",
     perjanjian: "",
   });
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   if (!user) {
-    return <div className="flex justify-center items-center h-screen">Loading...</div>;
+    return (
+      <div className="flex justify-center items-center h-screen">
+        <LoadingSpinner size="lg" />
+      </div>
+    );
   }
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -27,21 +36,31 @@ export default function DocumentAnalyzer() {
       setSelectedFile(file);
       const url = URL.createObjectURL(file);
       setPreviewUrl(url);
+      setAnalysisResult({
+        judul: "",
+        tanggal: "",
+        pihak: "",
+        deskripsi: "",
+        pihak2: "",
+        perjanjian: "",
+      });
     }
   };
 
-  const handleAnalyze = () => {
-    if (!selectedFile) return;
-    // TODO: Implement actual document analysis
-    console.log("Analyzing document:", selectedFile.name);
-    setAnalysisResult({
-      judul: "Sample Title",
-      tanggal: "2024-03-15",
-      pihak: "Party One",
-      deskripsi: "Sample description of the document...",
-      pihak2: "Party Two",
-      perjanjian: "Agreement Type",
-    });
+  const handleAnalyze = async () => {
+    if (!selectedFile || !token) return;
+
+    try {
+      setLoading(true);
+      setError(null);
+      const result = await analyzeDocument(token, selectedFile);
+      setAnalysisResult(result);
+    } catch (err) {
+      setError("Failed to analyze document");
+      console.error(err);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -49,7 +68,6 @@ export default function DocumentAnalyzer() {
       <div className="flex-1 p-3 md:p-4 lg:p-6 overflow-y-auto">
         <div className="max-w-full lg:max-w-[95%] xl:max-w-[90%] mx-auto space-y-4 md:space-y-6 pb-20">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 md:gap-8">
-
             <div className="space-y-5">
               <div className="bg-white shadow-md rounded-xl md:rounded-2xl p-4 md:p-6">
                 <h3 className="text-lg font-semibold mb-4 text-gray-800">Upload Document</h3>
@@ -70,47 +88,76 @@ export default function DocumentAnalyzer() {
 
               <button
                 onClick={handleAnalyze}
-                disabled={!selectedFile}
-                className="w-full px-4 py-3 text-white bg-gradient-to-r from-purple-600 to-purple-700 rounded-xl hover:opacity-90 focus:outline-none transition-all shadow-md font-medium disabled:opacity-50 disabled:cursor-not-allowed"
+                disabled={!selectedFile || loading}
+                className="w-full px-4 py-3 text-white bg-gradient-to-r from-purple-600 to-purple-700 rounded-xl hover:opacity-90 focus:outline-none transition-all shadow-md font-medium disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center"
               >
-                Analyze Document
+                {loading ? (
+                  <>
+                    <LoadingSpinner size="sm" color="white" />
+                    <span className="ml-2">Analyzing...</span>
+                  </>
+                ) : (
+                  "Analyze Document"
+                )}
               </button>
             </div>
 
-
             <div>
               <div className="bg-white shadow-md rounded-xl md:rounded-2xl p-4 md:p-6 space-y-4">
-                <h3 className="text-lg font-semibold mb-4 text-gray-800">Analysis Results</h3>
+                <h3 className="text-lg font-semibold mb-4 text-gray-800 flex items-center">
+                  {loading ? (
+                    <>
+                      <LoadingSpinner size="sm" />
+                      <span className="ml-2">Analyzing...</span>
+                    </>
+                  ) : (
+                    "Analysis Results"
+                  )}
+                </h3>
 
-                <div>
-                  <label className="block text-sm text-gray-600 mb-1">Judul</label>
-                  <input type="text" value={analysisResult.judul} readOnly className="w-full px-3 py-2 border border-gray-200 rounded-lg bg-gray-50" placeholder="Extracted title will appear here" />
-                </div>
+                {error && <div className="p-3 bg-red-50 text-red-500 rounded-lg text-center">{error}</div>}
 
-                <div>
-                  <label className="block text-sm text-gray-600 mb-1">Tanggal</label>
-                  <input type="text" value={analysisResult.tanggal} readOnly className="w-full px-3 py-2 border border-gray-200 rounded-lg bg-gray-50" placeholder="Extracted date will appear here" />
-                </div>
+                {loading ? (
+                  <div className="space-y-4">
+                    <SkeletonLoader rows={1} />
+                    <SkeletonLoader rows={1} />
+                    <SkeletonLoader rows={3} />
+                    <SkeletonLoader rows={1} />
+                    <SkeletonLoader rows={1} />
+                  </div>
+                ) : (
+                  <>
+                    <div>
+                      <label className="block text-sm text-gray-600 mb-1">Judul</label>
+                      <input type="text" value={analysisResult.judul} readOnly className="w-full px-3 py-2 border border-gray-200 rounded-lg bg-gray-50" placeholder="Extracted title will appear here" />
+                    </div>
 
-                <div>
-                  <label className="block text-sm text-gray-600 mb-1">Pihak 1</label>
-                  <input type="text" value={analysisResult.pihak} readOnly className="w-full px-3 py-2 border border-gray-200 rounded-lg bg-gray-50" placeholder="Extracted party name will appear here" />
-                </div>
+                    <div>
+                      <label className="block text-sm text-gray-600 mb-1">Tanggal</label>
+                      <input type="text" value={analysisResult.tanggal} readOnly className="w-full px-3 py-2 border border-gray-200 rounded-lg bg-gray-50" placeholder="Extracted date will appear here" />
+                    </div>
 
-                <div>
-                  <label className="block text-sm text-gray-600 mb-1">Deskripsi</label>
-                  <textarea value={analysisResult.deskripsi} readOnly rows={4} className="w-full px-3 py-2 border border-gray-200 rounded-lg bg-gray-50" placeholder="Extracted description will appear here" />
-                </div>
+                    <div>
+                      <label className="block text-sm text-gray-600 mb-1">Pihak 1</label>
+                      <input type="text" value={analysisResult.pihak} readOnly className="w-full px-3 py-2 border border-gray-200 rounded-lg bg-gray-50" placeholder="Extracted party name will appear here" />
+                    </div>
 
-                <div>
-                  <label className="block text-sm text-gray-600 mb-1">Pihak 2</label>
-                  <input type="text" value={analysisResult.pihak2} readOnly className="w-full px-3 py-2 border border-gray-200 rounded-lg bg-gray-50" placeholder="Extracted second party name will appear here" />
-                </div>
+                    <div>
+                      <label className="block text-sm text-gray-600 mb-1">Deskripsi</label>
+                      <textarea value={analysisResult.deskripsi} readOnly rows={4} className="w-full px-3 py-2 border border-gray-200 rounded-lg bg-gray-50" placeholder="Extracted description will appear here" />
+                    </div>
 
-                <div>
-                  <label className="block text-sm text-gray-600 mb-1">Perjanjian</label>
-                  <input type="text" value={analysisResult.perjanjian} readOnly className="w-full px-3 py-2 border border-gray-200 rounded-lg bg-gray-50" placeholder="Extracted agreement type will appear here" />
-                </div>
+                    <div>
+                      <label className="block text-sm text-gray-600 mb-1">Pihak 2</label>
+                      <input type="text" value={analysisResult.pihak2} readOnly className="w-full px-3 py-2 border border-gray-200 rounded-lg bg-gray-50" placeholder="Extracted second party name will appear here" />
+                    </div>
+
+                    <div>
+                      <label className="block text-sm text-gray-600 mb-1">Perjanjian</label>
+                      <input type="text" value={analysisResult.perjanjian} readOnly className="w-full px-3 py-2 border border-gray-200 rounded-lg bg-gray-50" placeholder="Extracted agreement type will appear here" />
+                    </div>
+                  </>
+                )}
               </div>
             </div>
           </div>

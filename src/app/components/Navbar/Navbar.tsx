@@ -5,23 +5,60 @@ import { usePathname } from "next/navigation";
 import clsx from "clsx";
 import { useAuth } from "../../../context/AuthContext";
 import { Menu, X } from "lucide-react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 const navLinks = [
-  { href: "/", label: "Home" },
-  { href: "/feature", label: "Feature" },
-  { href: "/law", label: "Law" },
-  { href: "/pricing", label: "Pricing" },
+  { href: "#hero", label: "Home" },
+  { href: "#features", label: "Feature" },
+  { href: "#law", label: "Law" },
+  { href: "#pricing", label: "Pricing" },
 ];
 
 const Navbar = () => {
   const pathname = usePathname();
   const { user, token, logout } = useAuth();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [activeSection, setActiveSection] = useState("");
 
   const handleLogout = () => {
     logout();
   };
+
+  const scrollToSection = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
+    e.preventDefault();
+    setMobileMenuOpen(false);
+
+    const targetId = href.replace("#", "");
+    const element = document.getElementById(targetId);
+
+    if (element) {
+      window.scrollTo({
+        top: element.offsetTop - 80,
+        behavior: "smooth",
+      });
+      setActiveSection(href);
+    }
+  };
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const sections = navLinks.map((link) => link.href.replace("#", ""));
+
+      for (const section of sections) {
+        const element = document.getElementById(section);
+        if (element) {
+          const rect = element.getBoundingClientRect();
+          if (rect.top <= 100 && rect.bottom >= 100) {
+            setActiveSection(`#${section}`);
+            break;
+          }
+        }
+      }
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
   return (
     <nav
@@ -46,14 +83,14 @@ const Navbar = () => {
       `}
       >
         {navLinks.map((link) => {
-          const isActive = pathname === link.href;
+          const isActive = activeSection === link.href || (!activeSection && link.href === "#hero");
 
           return (
             <li key={link.href} className="relative py-2 md:py-0">
-              <Link href={link.href} className={clsx("group text-white transition-colors font-medium relative px-3 md:px-4", isActive ? "font-semibold" : "text-white/80 hover:text-white")} onClick={() => setMobileMenuOpen(false)}>
+              <a href={link.href} onClick={(e) => scrollToSection(e, link.href)} className={clsx("group text-white transition-colors font-medium relative px-3 md:px-4", isActive ? "font-semibold" : "text-white/80 hover:text-white")}>
                 {link.label}
                 <span className={clsx("absolute left-0 bottom-[-25px] h-[2px] w-full bg-white transform transition-transform duration-300 ease-out origin-center", isActive ? "scale-x-100" : "scale-x-0 group-hover:scale-x-100")} />
-              </Link>
+              </a>
             </li>
           );
         })}
@@ -90,3 +127,4 @@ const Navbar = () => {
 };
 
 export default Navbar;
+

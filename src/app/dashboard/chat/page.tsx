@@ -1,53 +1,91 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import { SendIcon, Bot, Paperclip } from "lucide-react";
 import { useAuth } from "@/context/AuthContext";
-
-interface Message {
-  id: string;
-  content: string;
-  isUser: boolean;
-}
+import { fetchChatHistory, sendChatMessage } from "@/services/api/chat";
+import { Message } from "@/types/models/chat";
+import { LoadingSpinner, LoadingDots } from "@/components/ui/LoadingIndicators";
 
 export default function ChatPage() {
+  const { user, token } = useAuth();
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState("");
-  const { user } = useAuth();
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const messagesEndRef = useRef<HTMLDivElement>(null);
 
-  const handleSendMessage = (e: React.FormEvent) => {
+  useEffect(() => {
+    const loadChatHistory = async () => {
+      if (!token) return;
+
+      try {
+        setLoading(true);
+        const session = await fetchChatHistory(token);
+        if (session && session.messages) {
+          setMessages(session.messages);
+        }
+      } catch (err) {
+        console.error("Failed to load chat history:", err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    loadChatHistory();
+  }, [token]);
+
+  useEffect(() => {
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  }, [messages]);
+
+  const handleSendMessage = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!input.trim()) return;
+    if (!input.trim() || !token) return;
 
-    const newMessage: Message = {
+    const userMessage: Message = {
       id: Date.now().toString(),
       content: input,
       isUser: true,
     };
 
-    setMessages([...messages, newMessage]);
+    setMessages((prev) => [...prev, userMessage]);
     setInput("");
+    setError(null);
 
-    setTimeout(() => {
-      const aiResponse: Message = {
-        id: (Date.now() + 1).toString(),
-        content:
-          "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries,",
-        isUser: false,
-      };
+    try {
+      setLoading(true);
+      const aiResponse = await sendChatMessage(token, input);
       setMessages((prev) => [...prev, aiResponse]);
-    }, 1000);
+    } catch (err) {
+      setError("Failed to get response. Please try again.");
+      console.error(err);
+    } finally {
+      setLoading(false);
+    }
   };
 
   if (!user) {
-    return <div className="flex justify-center items-center h-screen">Loading...</div>;
+    return (
+      <div className="flex justify-center items-center h-screen">
+        <LoadingSpinner size="lg" />
+      </div>
+    );
   }
 
   return (
     <div className="flex flex-col h-full bg-gray-50 relative">
-
       <div className="absolute inset-0 bottom-[72px] overflow-y-auto p-4 md:p-6 space-y-6">
-        {messages.length === 0 ? (
+
+        {messages.length === 0 && loading && (
+          <div className="flex flex-col items-center justify-center h-full">
+            <LoadingSpinner size="lg" />
+            <p className="text-purple-600 mt-4">Loading conversation...</p>
+          </div>
+        )}
+
+
+        {messages.length === 0 && !loading ? (
           <div className="flex flex-col items-center justify-center h-full text-gray-400">
             <Bot size={48} className="mb-3 text-purple-400" />
             <p className="text-lg">Start a conversation with the AI assistant</p>
@@ -72,8 +110,30 @@ export default function ChatPage() {
             </div>
           ))
         )}
-      </div>
 
+
+        {error && (
+          <div className="flex justify-center">
+            <div className="bg-purple-50 text-purple-600 px-4 py-2 rounded-lg">{error}</div>
+          </div>
+        )}
+
+
+        {loading && messages.length > 0 && (
+          <div className="flex justify-start">
+            <div className="flex items-start gap-3">
+              <div className="w-9 h-9 rounded-full bg-gradient-to-br from-purple-500 to-purple-700 flex-shrink-0 flex items-center justify-center shadow-md">
+                <Bot className="w-5 h-5 text-white" />
+              </div>
+              <div className="rounded-2xl p-4 shadow-sm bg-white">
+                <LoadingDots />
+              </div>
+            </div>
+          </div>
+        )}
+
+        <div ref={messagesEndRef}></div>
+      </div>
 
       <div className="absolute bottom-0 left-0 right-0 bg-white p-4 shadow-[0_-2px_10px_rgba(0,0,0,0.05)]">
         <form onSubmit={handleSendMessage} className="max-w-4xl mx-auto">
@@ -81,9 +141,14 @@ export default function ChatPage() {
             <button type="button" className="p-2.5 rounded-full text-purple-600 hover:bg-purple-100 transition-all duration-200 flex items-center justify-center">
               <Paperclip className="w-5 h-5" />
             </button>
-            <input type="text" value={input} onChange={(e) => setInput(e.target.value)} placeholder="Type a message..." className="flex-1 px-3 py-3 bg-transparent focus:outline-none text-gray-700 placeholder-gray-500" />
-            <button type="submit" className="p-3 rounded-full bg-gradient-to-r from-purple-600 to-purple-700 text-white hover:shadow-md transition-all duration-200 flex-shrink-0 flex items-center justify-center" disabled={!input.trim()}>
-              <SendIcon className="w-5 h-5" />
+            <input type="text" value={input} onChange={(e) => setInput(e.target.value)} placeholder="Type a message..." className="flex-1 px-3 py-3 bg-transparent focus:outline-none text-gray-700 placeholder-gray-500" disabled={loading} />
+
+            <button
+              type="submit"
+              className="p-3 rounded-full bg-gradient-to-r from-purple-600 to-purple-700 text-white hover:shadow-md transition-all duration-200 flex-shrink-0 flex items-center justify-center"
+              disabled={!input.trim() || loading}
+            >
+              {loading ? <LoadingSpinner size="sm" color="white" /> : <SendIcon className="w-5 h-5" />}
             </button>
           </div>
         </form>

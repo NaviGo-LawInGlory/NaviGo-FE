@@ -66,25 +66,44 @@ export default function Sidebar({ isMobileMenuOpen, setIsMobileMenuOpen }: Sideb
 
   return (
     <>
+
+      {isMobileMenuOpen && (
+        <div 
+          className="md:hidden fixed inset-0 bg-black bg-opacity-50 z-40"
+          onClick={() => setIsMobileMenuOpen(false)}
+        />
+      )}
+      
+
       <aside
         className={`
           fixed top-0 left-0 h-screen bg-white z-50 
           w-[260px] md:w-[280px] lg:w-[300px]
-          transition-all duration-300 ease-in-out
           shadow-[5px_0_25px_-15px_rgba(0,0,0,0.15)]
           overflow-y-auto pt-6 md:pt-4
+          transition-transform duration-300 ease-out
           ${isMobileMenuOpen ? "translate-x-0" : "-translate-x-full md:translate-x-0"}
         `}
       >
+
         <div className="px-4 md:px-6 py-6 md:py-8 flex justify-center">
-          <Link href="/" className="flex items-center">
-            <Image src="/Sidebar/logoNavigoHitam.svg" alt="NaviGo Logo" width={100} height={70} priority className="w-[100px] md:w-[120px] h-auto" />
+          <Link href="/" className="flex items-center hover:scale-105 transition-transform duration-300">
+            <Image 
+              src="/Sidebar/logoNavigoHitam.svg" 
+              alt="NaviGo Logo" 
+              width={100} 
+              height={70} 
+              priority 
+              className="w-[100px] md:w-[120px] h-auto" 
+            />
           </Link>
         </div>
+
 
         <div className="flex justify-center my-4 md:my-6">
           <div className="w-[85%] h-[1px] bg-gradient-to-r from-transparent via-gray-200 to-transparent" />
         </div>
+
 
         <nav className="px-0 pb-20">
           <ul className="space-y-1 md:space-y-2 mt-4 md:mt-6">
@@ -103,8 +122,18 @@ export default function Sidebar({ isMobileMenuOpen, setIsMobileMenuOpen }: Sideb
                     onClick={() => setIsMobileMenuOpen(false)}
                   >
                     <div className="relative">
-                      <Image src={isActive ? item.activeIcon : item.icon} alt={`${item.name} icon`} width={20} height={20} className={`mr-3 md:mr-4 ${isActive ? "drop-shadow-md" : ""}`} />
-                      {isActive && <div className="absolute -left-4 md:-left-5 top-1/2 -translate-y-1/2 w-1.5 md:w-2 h-6 md:h-8 rounded-r-full bg-gradient-to-b from-[#61008D] to-[#A31ABE]" />}
+                      <Image 
+                        src={isActive ? item.activeIcon : item.icon} 
+                        alt={`${item.name} icon`} 
+                        width={20} 
+                        height={20} 
+                        className={`mr-3 md:mr-4 ${isActive ? "drop-shadow-md" : ""}`} 
+                      />
+                      {isActive && (
+                        <div 
+                          className="absolute -left-4 md:-left-5 top-1/2 -translate-y-1/2 w-1.5 md:w-2 h-6 md:h-8 rounded-r-full bg-gradient-to-b from-[#61008D] to-[#A31ABE]" 
+                        />
+                      )}
                     </div>
                     {item.name}
                   </Link>
@@ -112,6 +141,7 @@ export default function Sidebar({ isMobileMenuOpen, setIsMobileMenuOpen }: Sideb
               );
             })}
           </ul>
+
 
           <div className="fixed bottom-4 md:bottom-8 w-full px-4 md:px-8 max-w-[260px] md:max-w-[280px] lg:max-w-[300px]">
             <button
@@ -133,3 +163,4 @@ export default function Sidebar({ isMobileMenuOpen, setIsMobileMenuOpen }: Sideb
     </>
   );
 }
+

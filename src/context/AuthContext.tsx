@@ -2,7 +2,7 @@
 
 import { createContext, useState, useContext, ReactNode, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { authService } from "../services/authService";
+import { login as loginApi, register as registerApi, logout as logoutApi } from "@/services/api";
 
 interface User {
   id: number;
@@ -48,7 +48,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     setError(null);
 
     try {
-      const data = await authService.login({ email, password });
+      const data = await loginApi({ email, password });
 
       setUser(data.data);
       setToken(data.access_token);
@@ -69,7 +69,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     setError(null);
 
     try {
-      const data = await authService.register({
+      const data = await registerApi({
         name,
         email,
         password,
@@ -91,7 +91,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   };
 
   const logout = () => {
-    authService.logout();
+    logoutApi();
     setUser(null);
     setToken(null);
     router.push("/login");
