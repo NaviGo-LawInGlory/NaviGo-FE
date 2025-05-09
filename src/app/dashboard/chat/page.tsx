@@ -21,7 +21,7 @@ export default function ChatPage() {
 
       try {
         setLoading(true);
-        const session = await fetchChatHistory(token);
+        const session = await fetchChatHistory();
         if (session && session.messages) {
           setMessages(session.messages);
         }
@@ -55,7 +55,7 @@ export default function ChatPage() {
 
     try {
       setLoading(true);
-      const aiResponse = await sendChatMessage(token, input);
+      const aiResponse = await sendChatMessage(input);
       setMessages((prev) => [...prev, aiResponse]);
     } catch (err) {
       setError("Failed to get response. Please try again.");
@@ -76,14 +76,12 @@ export default function ChatPage() {
   return (
     <div className="flex flex-col h-full bg-gray-50 relative">
       <div className="absolute inset-0 bottom-[72px] overflow-y-auto p-4 md:p-6 space-y-6">
-
         {messages.length === 0 && loading && (
           <div className="flex flex-col items-center justify-center h-full">
             <LoadingSpinner size="lg" />
             <p className="text-purple-600 mt-4">Loading conversation...</p>
           </div>
         )}
-
 
         {messages.length === 0 && !loading ? (
           <div className="flex flex-col items-center justify-center h-full text-gray-400">
@@ -111,13 +109,11 @@ export default function ChatPage() {
           ))
         )}
 
-
         {error && (
           <div className="flex justify-center">
             <div className="bg-purple-50 text-purple-600 px-4 py-2 rounded-lg">{error}</div>
           </div>
         )}
-
 
         {loading && messages.length > 0 && (
           <div className="flex justify-start">
@@ -156,4 +152,3 @@ export default function ChatPage() {
     </div>
   );
 }
-

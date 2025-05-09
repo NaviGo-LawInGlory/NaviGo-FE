@@ -1,31 +1,21 @@
 import { Message, ChatSession } from "@/types/models";
-import { API_BASE_URL, handleApiError, getAuthOptions } from "./core";
+import api from "../api_interceptor";
 
-export const sendChatMessage = async (token: string, content: string): Promise<Message> => {
+export const sendChatMessage = async (content: string): Promise<Message> => {
   try {
-    const response = await fetch(`${API_BASE_URL}/chat/send`, {
-      ...getAuthOptions(token, {
-        method: "POST",
-        body: JSON.stringify({ content }),
-      }),
-    });
-
-    if (!response.ok) throw new Error("Failed to send message");
-    return await response.json();
+    const response = await api.post("/chat/send", { content });
+    return response.data;
   } catch (error) {
-    return handleApiError(error);
+    throw error;
   }
 };
 
-export const fetchChatHistory = async (token: string, sessionId?: string): Promise<ChatSession> => {
+export const fetchChatHistory = async (sessionId?: string): Promise<ChatSession> => {
   try {
-    const endpoint = sessionId ? `${API_BASE_URL}/chat/sessions/${sessionId}` : `${API_BASE_URL}/chat/sessions/latest`;
-
-    const response = await fetch(endpoint, getAuthOptions(token));
-    if (!response.ok) throw new Error("Failed to fetch chat history");
-    return await response.json();
+    const endpoint = sessionId ? `/chat/sessions/${sessionId}` : "/chat/sessions/latest";
+    const response = await api.get(endpoint);
+    return response.data;
   } catch (error) {
-    return handleApiError(error);
+    throw error;
   }
 };
-

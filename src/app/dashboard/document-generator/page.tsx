@@ -35,7 +35,7 @@ export default function DocumentGenerator() {
     try {
       setLoading(true);
       setError(null);
-      const result = await generateDocument(token, formData);
+      const result = await generateDocument(formData);
       setGeneratedDoc(result);
     } catch (err) {
       setError("Failed to generate document");
@@ -49,7 +49,7 @@ export default function DocumentGenerator() {
     if (!token || !generatedDoc?.id) return;
 
     try {
-      const blob = await downloadDocument(token, generatedDoc.id);
+      const blob = await downloadDocument(generatedDoc.id);
 
       // Create download link
       const url = window.URL.createObjectURL(blob);

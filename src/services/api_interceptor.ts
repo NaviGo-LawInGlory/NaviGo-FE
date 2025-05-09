@@ -3,6 +3,8 @@ import { API_CONFIG } from "./api_config";
 
 const api: AxiosInstance = axios.create(API_CONFIG);
 
+let isRedirecting = false;
+
 api.interceptors.request.use(
   (config: InternalAxiosRequestConfig) => {
     const token = localStorage.getItem("token");
@@ -22,11 +24,15 @@ api.interceptors.response.use(
   },
   (error: AxiosError) => {
     if (error.response && error.response.status === 401) {
-      localStorage.removeItem("token");
-      localStorage.removeItem("user");
+      if (!isRedirecting) {
+        isRedirecting = true;
 
-      if (typeof window !== "undefined") {
-        window.location.href = "/login";
+        localStorage.removeItem("token");
+        localStorage.removeItem("user");
+
+        if (typeof window !== "undefined") {
+          window.location.href = "/login";
+        }
       }
     }
 
@@ -35,3 +41,4 @@ api.interceptors.response.use(
 );
 
 export default api;
+

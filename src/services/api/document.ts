@@ -1,50 +1,41 @@
 import { DocumentGeneratorRequest, GeneratedDocument, DocumentAnalysisResult } from "@/types/models";
-import { API_BASE_URL, handleApiError, getAuthOptions } from "./core";
+import api from "../api_interceptor";
 
 // Document Generator API
-export const generateDocument = async (token: string, documentData: DocumentGeneratorRequest): Promise<GeneratedDocument> => {
+export const generateDocument = async (documentData: DocumentGeneratorRequest): Promise<GeneratedDocument> => {
   try {
-    const response = await fetch(`${API_BASE_URL}/documents/generate`, {
-      ...getAuthOptions(token, {
-        method: "POST",
-        body: JSON.stringify(documentData),
-      }),
-    });
-
-    if (!response.ok) throw new Error("Failed to generate document");
-    return await response.json();
+    const response = await api.post("/documents/generate", documentData);
+    return response.data;
   } catch (error) {
-    return handleApiError(error);
+    throw error;
   }
 };
 
-export const downloadDocument = async (token: string, documentId: string): Promise<Blob> => {
+export const downloadDocument = async (documentId: string): Promise<Blob> => {
   try {
-    const response = await fetch(`${API_BASE_URL}/documents/${documentId}/download`, getAuthOptions(token));
-    if (!response.ok) throw new Error("Failed to download document");
-    return await response.blob();
+    const response = await api.get(`/documents/${documentId}/download`, {
+      responseType: "blob",
+    });
+    return response.data;
   } catch (error) {
-    return handleApiError(error);
+    throw error;
   }
 };
 
 // Document Analyzer API
-export const analyzeDocument = async (token: string, file: File): Promise<DocumentAnalysisResult> => {
+export const analyzeDocument = async (file: File): Promise<DocumentAnalysisResult> => {
   try {
     const formData = new FormData();
     formData.append("file", file);
 
-    const response = await fetch(`${API_BASE_URL}/documents/analyze`, {
-      method: "POST",
+    const response = await api.post("/documents/analyze", formData, {
       headers: {
-        Authorization: `Bearer ${token}`,
+        "Content-Type": "multipart/form-data",
       },
-      body: formData,
     });
 
-    if (!response.ok) throw new Error("Failed to analyze document");
-    return await response.json();
+    return response.data;
   } catch (error) {
-    return handleApiError(error);
+    throw error;
   }
 };

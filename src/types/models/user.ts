@@ -13,3 +13,10 @@ export interface UserStats {
   documents_analyzed: number;
   recent_activities: Activity[];
 }
+
+export interface UpdateUserProfileRequest {
+  name: string;
+  location?: string;
+  phone?: string;
+  bio?: string;
+}

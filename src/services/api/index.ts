@@ -5,5 +5,4 @@ export * from "./lawyer";
 export * from "./chat";
 export * from "./auth";
 
-export { API_BASE_URL, handleApiError, getAuthOptions } from "./core";
-
+export { handleApiError, getAuthOptions } from "./core";

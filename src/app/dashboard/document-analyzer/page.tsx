@@ -53,7 +53,7 @@ export default function DocumentAnalyzer() {
     try {
       setLoading(true);
       setError(null);
-      const result = await analyzeDocument(token, selectedFile);
+      const result = await analyzeDocument(selectedFile);
       setAnalysisResult(result);
     } catch (err) {
       setError("Failed to analyze document");
@@ -166,4 +166,3 @@ export default function DocumentAnalyzer() {
     </div>
   );
 }
-

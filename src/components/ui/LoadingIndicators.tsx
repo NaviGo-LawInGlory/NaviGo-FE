@@ -44,41 +44,33 @@ export const SkeletonLoader = ({ className = "", rows = 1 }: { className?: strin
 
 export const CardSkeletonLoader = () => {
   return (
-    <div className="bg-white shadow-md rounded-xl md:rounded-2xl p-4 md:p-6 animate-pulse mb-4 hover:shadow-lg transition-shadow duration-200">
-      <div className="flex flex-col md:flex-row gap-4">
+    <div className="rounded-2xl overflow-hidden shadow-md bg-white animate-pulse h-full flex flex-col">
+      {/* Image skeleton */}
+      <div className="w-full h-52 bg-gray-200"></div>
 
-        <div className="w-full md:w-1/4 relative h-40 md:h-auto bg-gray-200 rounded-lg"></div>
+      {/* Content skeleton */}
+      <div className="p-5 flex-grow flex flex-col">
+        {/* Name */}
+        <div className="h-6 bg-gray-200 rounded-md w-3/4 mb-3"></div>
 
-        <div className="w-full md:w-3/4">
-
-          <div className="flex justify-between items-center">
-            <div className="h-6 bg-gray-200 rounded-md w-1/3"></div>
-            <div className="flex items-center gap-1 bg-purple-50 rounded-full py-1 px-3 w-20">
-              <div className="h-4 bg-gray-200 rounded-full w-full"></div>
-            </div>
-          </div>
-
-
-          <div className="flex justify-between mt-2">
-            <div className="h-4 bg-gray-200 rounded-md w-1/4"></div>
-            <div className="h-4 bg-gray-200 rounded-md w-1/4"></div>
-          </div>
-
-
-          <div className="h-4 bg-gray-200 rounded-md w-1/3 mt-3"></div>
-
-
-          <div className="flex gap-2 mt-4 flex-wrap">
-            <div className="h-6 bg-purple-100 rounded-xl w-20"></div>
-            <div className="h-6 bg-purple-100 rounded-xl w-24"></div>
-            <div className="h-6 bg-purple-100 rounded-xl w-16"></div>
-          </div>
-
-
-          <div className="mt-4 flex justify-end">
-            <div className="h-10 bg-purple-100 rounded-lg w-32"></div>
-          </div>
+        {/* Experience and location */}
+        <div className="flex justify-between items-center mb-3">
+          <div className="h-4 bg-gray-200 rounded-md w-1/3"></div>
+          <div className="h-4 bg-gray-200 rounded-md w-1/3"></div>
         </div>
+
+        {/* Availability */}
+        <div className="h-4 bg-gray-200 rounded-md w-2/5 mb-3"></div>
+
+        {/* Specializations */}
+        <div className="flex gap-2 mt-auto mb-4 flex-wrap">
+          <div className="h-6 bg-gray-200 rounded-xl w-20"></div>
+          <div className="h-6 bg-gray-200 rounded-xl w-24"></div>
+          <div className="h-6 bg-gray-200 rounded-xl w-16"></div>
+        </div>
+
+        {/* Contact button */}
+        <div className="h-10 bg-gray-200 rounded-xl w-full mt-auto"></div>
       </div>
     </div>
   );
@@ -89,17 +81,14 @@ export const HistoryCardSkeletonLoader = () => {
     <div className="bg-white shadow-md rounded-xl md:rounded-2xl p-4 md:p-6 animate-pulse transition-all hover:shadow-lg">
       <div className="flex flex-row items-center w-full justify-between">
         <div className="flex flex-row items-center">
-
           <div className="h-12 md:h-16 w-16 md:w-16 mr-4 bg-gray-200 rounded-md"></div>
 
           <div className="flex flex-col">
-
             <div className="h-6 bg-gray-200 rounded-md w-48 mb-2"></div>
 
             <div className="h-4 bg-gray-200 rounded-md w-64"></div>
           </div>
         </div>
-
 
         <div className="h-4 bg-gray-200 rounded-md w-24"></div>
       </div>
@@ -118,4 +107,3 @@ export const StatsLoader = () => {
     </div>
   );
 };
-

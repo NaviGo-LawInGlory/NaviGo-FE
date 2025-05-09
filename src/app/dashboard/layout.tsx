@@ -10,17 +10,21 @@ interface DashboardLayoutProps {
 }
 
 export default function DashboardLayout({ children }: DashboardLayoutProps) {
-  const { user, token } = useAuth();
+  const { user, token, authInitialized } = useAuth();
   const router = useRouter();
 
   useEffect(() => {
-    if (!token && typeof window !== "undefined") {
+    if (authInitialized && !token) {
       router.push("/login");
     }
-  }, [token, router]);
+  }, [authInitialized, token, router]);
 
-  if (!user && typeof window !== "undefined") {
+  if (!authInitialized) {
     return <div className="flex justify-center items-center h-screen">Loading...</div>;
+  }
+
+  if (authInitialized && !user) {
+    return null;
   }
 
   return (
@@ -31,3 +35,4 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
     </div>
   );
 }
+

@@ -19,7 +19,7 @@ export default function HistoryPage() {
 
     try {
       setLoading(true);
-      const history = await fetchUserHistory(token);
+      const history = await fetchUserHistory();
       setHistoryData(history);
       setError(null);
     } catch (err) {

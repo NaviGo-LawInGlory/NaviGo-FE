@@ -20,7 +20,6 @@ const LawSection = () => {
     <section ref={sectionRef} className="py-16 sm:py-20 md:py-24 px-4 sm:px-6 md:px-12 bg-white" id="law">
       <div className="container mx-auto">
         <div className="flex flex-col md:flex-row items-center justify-between gap-12 lg:gap-16">
-
           <motion.div className="w-full md:w-1/2 flex flex-col items-start" initial={{ opacity: 0, x: -30 }} animate={isInView ? { opacity: 1, x: 0 } : { opacity: 0, x: -30 }} transition={{ duration: 0.7 }}>
             <h2 className="text-[#61008D] font-bold text-xl sm:text-2xl mb-3">Indonesian Law</h2>
             <h3 className="text-[#3D3F40] font-bold text-2xl sm:text-3xl md:text-4xl mb-6">Comprehensive Reference to Indonesian Legal System</h3>
@@ -28,7 +27,6 @@ const LawSection = () => {
               Explore comprehensive resources on Indonesian legal frameworks, statutes, and regulations. Our platform offers reliable references to help you navigate the complexities of Indonesian law with confidence and clarity, all
               available at your fingertips.
             </p>
-
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 w-full mb-8">
               {legalCategories.map((category, index) => (
@@ -48,7 +46,6 @@ const LawSection = () => {
               ))}
             </div>
 
-
             <motion.div className="relative w-full max-w-md" initial={{ opacity: 0, y: 20 }} animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }} transition={{ duration: 0.5, delay: 0.8 }}>
               <div className="relative">
                 <input
@@ -62,16 +59,12 @@ const LawSection = () => {
             </motion.div>
           </motion.div>
 
-
           <motion.div className="w-full md:w-1/2 mt-10 md:mt-0" initial={{ opacity: 0, x: 30 }} animate={isInView ? { opacity: 1, x: 0 } : { opacity: 0, x: 30 }} transition={{ duration: 0.7 }}>
             <div className="relative">
-
               <div className="absolute -top-6 -left-6 w-20 h-20 bg-purple-100 rounded-full opacity-50"></div>
               <div className="absolute -bottom-6 -right-6 w-32 h-32 bg-pink-100 rounded-full opacity-50"></div>
 
-
-              <img src="Law/LawSection.png" alt="Indonesian Law Reference" className="w-full h-auto rounded-2xl shadow-xl relative z-10" />
-
+              <img src="justice.png" alt="Indonesian Law Reference" className="w-auto h-120 rounded-2xl shadow-xl relative z-10" />
 
               <div className="absolute top-6 right-6 bg-white py-2 px-4 rounded-full shadow-lg z-20">
                 <p className="text-sm font-bold text-purple-700">3,000+ Legal Documents</p>
@@ -85,4 +78,3 @@ const LawSection = () => {
 };
 
 export default LawSection;
-

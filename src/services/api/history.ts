@@ -1,13 +1,11 @@
 import { Activity } from "@/types/models";
-import { API_BASE_URL, handleApiError, getAuthOptions } from "./core";
+import api from "../api_interceptor";
 
-export const fetchUserHistory = async (token: string): Promise<Activity[]> => {
+export const fetchUserHistory = async (): Promise<Activity[]> => {
   try {
-    const response = await fetch(`${API_BASE_URL}/activities`, getAuthOptions(token));
-    if (!response.ok) throw new Error("Failed to fetch user history");
-    return await response.json();
+    const response = await api.get("/activities");
+    return response.data;
   } catch (error) {
-    return handleApiError(error);
+    throw error;
   }
 };
-
