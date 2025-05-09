@@ -1,53 +1,86 @@
 import React from "react";
 import { FaStar } from "react-icons/fa";
 import { HiLocationMarker } from "react-icons/hi";
-import Image from "next/image";
+import axios from 'axios';
+import { useState, useEffect } from "react";
+// import { LawyerCardProps } from "./LawyerCard"
+// import Image from "next/image";
 
+// export interface LawyerCardProps {
+//   name: string;
+//   rating: number;
+//   priceRange: string;
+//   location: string;
+//   categories: string[];
+//   imageUrl: string;
+// }
 export interface LawyerCardProps {
   name: string;
   rating: number;
-  priceRange: string;
   location: string;
-  categories: string[];
-  imageUrl: string;
+  specialization_1: string;
+  specialization_2: string;
+  min_price: number;
+  max_price: number;
+  profile_image: string;
 }
 
-const lawyers: LawyerCardProps[] = [
-  {
-    name: "Elgin Brian",
-    rating: 4.8,
-    priceRange: "Rp1.000.000 - Rp1.200.000",
-    location: "Malang",
-    categories: ["Haki", "Pajak"],
-    imageUrl: "/Profil/Elgin.jpg",
-  },
-  {
-    name: "Rizqi Aditya",
-    rating: 4.6,
-    priceRange: "Rp700.000 - Rp1.200.000",
-    location: "Banjarnegara",
-    categories: ["Kontrak", "Perdata"],
-    imageUrl: "/Profil/Rizqi.jpg",
-  },
-  {
-    name: "Andreas Bagasgoro",
-    rating: 4.6,
-    priceRange: "Rp700.000 - Rp1.200.000",
-    location: "Batam",
-    categories: ["Kontrak", "Perdata"],
-    imageUrl: "/Profil/Andre.jpg",
-  },
-  {
-    name: "Gantang Satria",
-    rating: 4.6,
-    priceRange: "Rp700.000 - Rp1.200.000",
-    location: "Surabaya",
-    categories: ["Kontrak", "Perdata"],
-    imageUrl: "/Profil/Rizqi.jpg",
-  },
-];
+
+
+// const lawyers: LawyerCardProps[] = [
+//   {
+//     name: "Elgin Brian",
+//     rating: 4.8,
+//     priceRange: "Rp1.000.000 - Rp1.200.000",
+//     location: "Malang",
+//     categories: ["Haki", "Pajak"],
+//     imageUrl: "/Profil/Elgin.jpg",
+//   },
+//   {
+//     name: "Rizqi Aditya",
+//     rating: 4.6,
+//     priceRange: "Rp700.000 - Rp1.200.000",
+//     location: "Banjarnegara",
+//     categories: ["Kontrak", "Perdata"],
+//     imageUrl: "/Profil/Rizqi.jpg",
+//   },
+//   {
+//     name: "Andreas Bagasgoro",
+//     rating: 4.6,
+//     priceRange: "Rp700.000 - Rp1.200.000",
+//     location: "Batam",
+//     categories: ["Kontrak", "Perdata"],
+//     imageUrl: "/Profil/Andre.jpg",
+//   },
+//   {
+//     name: "Gantang Satria",
+//     rating: 4.6,
+//     priceRange: "Rp700.000 - Rp1.200.000",
+//     location: "Surabaya",
+//     categories: ["Kontrak", "Perdata"],
+//     imageUrl: "/Profil/Rizqi.jpg",
+//   },
+// ];
 
 const LawyerCardList: React.FC = () => {
+
+  const [lawyers, setLawyers] = useState<LawyerCardProps[]>([]);
+
+  useEffect(() => {
+    axios.get<LawyerCardProps[]>('http://localhost:8000/api/lawyers')
+      .then(response => {
+        const sanitized = response.data.map(lawyer => ({
+          name: lawyer.name,
+          rating: lawyer.rating,
+          location: lawyer.location,
+          imageUrl: lawyer.profile_image,
+          categories: [lawyer.specialization_1, lawyer.specialization_2].filter(Boolean),
+          priceRange: `Rp${lawyer.min_price.toLocaleString()} - Rp${lawyer.max_price.toLocaleString()}`
+        }));
+        setLawyers(sanitized);
+      })
+      .catch(error => console.error('Error fetching lawyers:', error));
+  }, []);
   return (
     <div className="w-full bg-gray-50 p-3">
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
