@@ -1,9 +1,10 @@
 "use client";
 
 import { useAuth } from "@/context/AuthContext";
+import { useDocument } from "@/context/DocumentContext";
 import { useState, useEffect, useMemo } from "react";
 import { Check } from "lucide-react";
-import { generateDocument, downloadDocument } from "@/services/api";
+import { generateDocument, downloadDocument, getDocumentContent } from "@/services/api";
 import { DocumentGeneratorRequest, GeneratedDocument, DocumentType } from "@/types/models";
 import { LoadingSpinner } from "@/components/ui/LoadingIndicators";
 
@@ -17,6 +18,7 @@ import { documentTemplates } from "@/components/document-generator/DocumentTempl
 
 export default function DocumentGenerator() {
   const { user, token } = useAuth();
+  const { addDocumentToCache } = useDocument();
   const [selectedDocType, setSelectedDocType] = useState<DocumentType>(DocumentType.PERJANJIAN_KERJASAMA);
   const [formData, setFormData] = useState<DocumentGeneratorRequest>({
     documentType: DocumentType.PERJANJIAN_KERJASAMA,
@@ -98,7 +100,10 @@ export default function DocumentGenerator() {
     try {
       setLoading(true);
       setError(null);
+
+      // The generateDocument function will now filter fields based on document type
       const result = await generateDocument(formData);
+
       setGeneratedDoc(result);
       setSuccessMessage("Dokumen berhasil dibuat!");
       window.scrollTo({ top: 0, behavior: "smooth" });
@@ -114,27 +119,45 @@ export default function DocumentGenerator() {
     if (!token || !generatedDoc?.id) return;
 
     try {
-      const blob = await downloadDocument(generatedDoc.id);
+      setLoading(true);
 
-      // Create download link
-      const url = window.URL.createObjectURL(blob);
-      const a = document.createElement("a");
-      a.href = url;
-      a.download = `${formData.judul || "document"}.pdf`;
-      document.body.appendChild(a);
-      a.click();
+      // Get the document content and store it in global context
+      try {
+        console.log(`Fetching content for document ID: ${generatedDoc.id}`);
+        const content = await getDocumentContent(generatedDoc.id);
 
-      // Cleanup
-      window.URL.revokeObjectURL(url);
-      document.body.removeChild(a);
-      setSuccessMessage("Dokumen berhasil diunduh!");
-    } catch (err) {
-      setError("Failed to download document");
+        if (!content) {
+          console.error("Received empty content from API");
+          throw new Error("Empty document content received");
+        }
+
+        console.log("Content fetched successfully, length:", content.length);
+
+        // Store in context with localStorage persistence
+        addDocumentToCache(generatedDoc.id, formData.judul || "Generated Document", content);
+        console.log("Document added to cache");
+      } catch (err) {
+        console.error("Error prefetching document content:", err);
+      }
+
+      // Redirect to the dedicated document viewing page
+      const title = formData.judul || "Generated Document";
+
+      // Clean up the URL by encoding the title properly
+      const encodedTitle = encodeURIComponent(title);
+
+      // Navigate to the new document viewer page with document ID and title
+      window.open(`/dashboard/download-document?id=${generatedDoc.id}&title=${encodedTitle}`, "_blank");
+
+      setSuccessMessage("Document opened in a new tab");
+    } catch (err: any) {
+      setError(err.message || "Failed to open document");
       console.error(err);
+    } finally {
+      setLoading(false);
     }
   };
 
-  // Check if required fields are filled
   const canGenerateDocument = () => {
     const requiredFields = selectedTemplate.fields.filter((field) => field.required);
     return requiredFields.every((field) => formData[field.key] !== "");

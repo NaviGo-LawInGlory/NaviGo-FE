@@ -53,3 +53,4 @@ export interface DocumentAnalysisResult {
   perjanjian: string;
   deskripsi: string;
 }
+

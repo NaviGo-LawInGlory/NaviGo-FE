@@ -12,6 +12,7 @@ interface DashboardLayoutProps {
 export default function DashboardLayout({ children }: DashboardLayoutProps) {
   const { user, token, authInitialized } = useAuth();
   const router = useRouter();
+  const pathname = usePathname();
 
   useEffect(() => {
     if (authInitialized && !token) {
@@ -27,12 +28,13 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
     return null;
   }
 
+  const isDownloadPage = pathname?.includes("/dashboard/download-document");
+
   return (
     <div className="h-screen flex flex-col overflow-hidden">
-      <ClientSidebarWrapper />
+      {!isDownloadPage && <ClientSidebarWrapper />}
 
-      <main className="flex-1 ml-0 md:ml-[280px] lg:ml-[300px] overflow-hidden">{children}</main>
+      <main className={`flex-1 ${!isDownloadPage ? "ml-0 md:ml-[280px] lg:ml-[300px]" : ""} overflow-hidden`}>{children}</main>
     </div>
   );
 }
-
