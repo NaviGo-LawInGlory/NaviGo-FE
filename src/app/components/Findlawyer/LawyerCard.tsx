@@ -10,7 +10,7 @@ interface LawyerCardProps {
 const LawyerCard: React.FC<LawyerCardProps> = ({ lawyer }) => {
   return (
     <div className="rounded-2xl overflow-hidden shadow-md bg-white hover:shadow-lg transition-all duration-300 h-full flex flex-col">
-      {/* Image section - fixed height with proper ratio */}
+
       <div className="relative h-52 overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent z-10"></div>
         <img
@@ -54,3 +54,4 @@ const LawyerCard: React.FC<LawyerCardProps> = ({ lawyer }) => {
 };
 
 export default LawyerCard;
+

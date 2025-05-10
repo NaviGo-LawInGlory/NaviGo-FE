@@ -45,31 +45,31 @@ export const SkeletonLoader = ({ className = "", rows = 1 }: { className?: strin
 export const CardSkeletonLoader = () => {
   return (
     <div className="rounded-2xl overflow-hidden shadow-md bg-white animate-pulse h-full flex flex-col">
-      {/* Image skeleton */}
+
       <div className="w-full h-52 bg-gray-200"></div>
 
-      {/* Content skeleton */}
+
       <div className="p-5 flex-grow flex flex-col">
-        {/* Name */}
+
         <div className="h-6 bg-gray-200 rounded-md w-3/4 mb-3"></div>
 
-        {/* Experience and location */}
+
         <div className="flex justify-between items-center mb-3">
           <div className="h-4 bg-gray-200 rounded-md w-1/3"></div>
           <div className="h-4 bg-gray-200 rounded-md w-1/3"></div>
         </div>
 
-        {/* Availability */}
+
         <div className="h-4 bg-gray-200 rounded-md w-2/5 mb-3"></div>
 
-        {/* Specializations */}
+
         <div className="flex gap-2 mt-auto mb-4 flex-wrap">
           <div className="h-6 bg-gray-200 rounded-xl w-20"></div>
           <div className="h-6 bg-gray-200 rounded-xl w-24"></div>
           <div className="h-6 bg-gray-200 rounded-xl w-16"></div>
         </div>
 
-        {/* Contact button */}
+
         <div className="h-10 bg-gray-200 rounded-xl w-full mt-auto"></div>
       </div>
     </div>
@@ -107,3 +107,4 @@ export const StatsLoader = () => {
     </div>
   );
 };
+

@@ -19,3 +19,21 @@ export const fetchChatHistory = async (sessionId?: string): Promise<ChatSession>
     throw error;
   }
 };
+
+export const createNewChatSession = async (): Promise<ChatSession> => {
+  try {
+    const response = await api.post("/chat/sessions/new");
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const fetchAllChatSessions = async (): Promise<ChatSession[]> => {
+  try {
+    const response = await api.get("/chat/sessions");
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};
