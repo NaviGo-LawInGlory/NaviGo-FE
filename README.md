@@ -1,5 +1,7 @@
 # 🚀 NaviGo - Your Integrated Legal Solution ⚖️
 
+[![Final Project Pemrograman Web Lanjut - [Law in Glory / Navigo]](https://i.ytimg.com/vi/Xup02FQcCCw/maxresdefault.jpg)](http://www.youtube.com/watch?v=Xup02FQcCCw8)
+
 Welcome to **NaviGo**! A modern, fast, and efficient legal tech platform designed to empower your legal needs. Whether you're generating legal documents, analyzing MOUs, seeking legal advice from an AI, or finding a certified lawyer, NaviGo has you got you covered. Built with a powerful stack including Next.js and TypeScript, our platform provides a seamless and user-friendly experience.
 
 ## ✨ Features
